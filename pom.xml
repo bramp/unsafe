@@ -1,0 +1,111 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.bramp.unsafe</groupId>
+    <artifactId>unsafe-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Unsafe</name>
+    <description>Assorted java classes that make use of sun.misc.Unsafe</description>
+
+    <modules>
+        <module>unsafe-benchmark</module>
+        <module>unsafe-collection</module>
+        <module>unsafe-helper</module>
+        <module>unsafe-tests</module>
+        <module>unsafe-unroller</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javac.target>1.6</javac.target>
+        <unsafe.version>1.0-SNAPSHOT</unsafe.version>
+    </properties>
+
+    <prerequisites>
+        <maven>3.0</maven>
+    </prerequisites>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>18.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>0.6.8</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bramp.unsafe</groupId>
+                <artifactId>unsafe-unroller</artifactId>
+                <version>${unsafe.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bramp.unsafe</groupId>
+                <artifactId>unsafe-helper</artifactId>
+                <version>${unsafe.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bramp.unsafe</groupId>
+                <artifactId>unsafe-collection</artifactId>
+                <version>${unsafe.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.5</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.3</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.2.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.17</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <defaultGoal>install</defaultGoal>
+    </build>
+
+</project>
