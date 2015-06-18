@@ -6,6 +6,7 @@ import sun.misc.Unsafe;
 import java.lang.reflect.InvocationTargetException;
 import java.util.AbstractList;
 import java.util.Collection;
+import java.util.RandomAccess;
 
 /**
  * ArrayList implemented using Unsafe operations
@@ -13,7 +14,7 @@ import java.util.Collection;
  *
  * This is not thread safe
  */
-public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T> {
+public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T>, RandomAccess {
 
     private static final int DEFAULT_CAPACITY = 10;
 

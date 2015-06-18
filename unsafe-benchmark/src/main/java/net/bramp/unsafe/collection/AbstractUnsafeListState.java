@@ -2,6 +2,7 @@ package net.bramp.unsafe.collection;
 
 import net.bramp.unsafe.UnsafeArrayList;
 import net.bramp.unsafe.sort.InplaceQuickSort;
+import net.bramp.unsafe.sort.Shuffle;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 
@@ -37,6 +38,7 @@ public abstract class AbstractUnsafeListState<T extends Comparable<T>> extends A
 
     @Benchmark
     public void testListSortInPlace() {
+        Shuffle.shuffle(list, r); // We shuffle to make the sort different each time
         InplaceQuickSort.quickSort(list);
     }
 }
