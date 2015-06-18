@@ -20,9 +20,10 @@ public class QuickSort {
      * @param array
      */
     public static<E extends Comparable<E>> void quickSort(List<E> array) {
-        if (!array.isEmpty()) {
-            recursiveQuickSort(array, 0, array.size() - 1);
+        if (array.isEmpty()) {
+            return;
         }
+        recursiveQuickSort(array, 0, array.size() - 1);
     }
 
     /**
@@ -57,7 +58,8 @@ public class QuickSort {
      * @return the partition index
      */
     public static<E extends Comparable<E>> int partition(List<E> array, int left, int right) {
-        E pivot = array.get(left); // taking first element as pivot
+        final int mid = left + ((right - left) / 2);
+        E pivot = array.get(mid); // taking mid point as pivot
 
         while (left <= right) {
             //searching number which is greater than pivot, bottom up

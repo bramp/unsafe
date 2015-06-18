@@ -19,12 +19,11 @@ public abstract class Shuffle {
         }
     }
 
-    public static void swap(List<?> list, int i, int j) {
-        final List l = list;
-        l.set(i, l.set(j, l.get(i)));
+    public static<T> void swap(List<T> list, int i, int j) {
+        list.set(i, list.set(j, list.get(i)));
     }
 
-    public static void shuffle(List<?> list, Random rnd) {
+    public static<T> void shuffle(List<T> list, Random rnd) {
         for (int i=list.size(); i>1; i--) {
             swap(list, i-1, rnd.nextInt(i));
         }

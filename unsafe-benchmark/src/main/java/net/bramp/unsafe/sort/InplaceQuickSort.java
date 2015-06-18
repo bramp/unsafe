@@ -21,9 +21,10 @@ public class InplaceQuickSort {
      * @param array
      */
     public static<E extends Comparable<E>> void quickSort(InplaceList<E> array) {
-        if (!array.isEmpty()) {
-            recursiveQuickSort(array, 0, array.size() - 1);
+        if (array.isEmpty()) {
+            return;
         }
+        recursiveQuickSort(array, 0, array.size() - 1);
     }
 
     /**
@@ -58,7 +59,8 @@ public class InplaceQuickSort {
      * @return the partition index
      */
     public static<E extends Comparable<E>> int partition(InplaceList<E> array, int left, int right) {
-        E pivot = array.get(left); // taking first element as pivot
+        final int mid = left + ((right - left) / 2);
+        E pivot = array.get(mid); // taking mid point as pivot
         E current = array.get(0);  // get first element, just so we can create an instance
 
         while (left <= right) {
