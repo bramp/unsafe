@@ -13,7 +13,7 @@ import java.util.RandomAccess;
 public abstract class Shuffle {
 
     // Simple Fisher–Yates shuffle
-    public static void shuffle(InplaceList<?> list, Random rnd) {
+    public static void shuffleInplace(InplaceList<?> list, Random rnd) {
         for (int i=list.size(); i>1; i--) {
             list.swap(i-1, rnd.nextInt(i));
         }

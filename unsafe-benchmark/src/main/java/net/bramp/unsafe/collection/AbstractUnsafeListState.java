@@ -40,7 +40,7 @@ public abstract class AbstractUnsafeListState<T extends Comparable<T>> extends A
     @Setup(Level.Iteration)
     public void shuffle() throws IllegalAccessException, InstantiationException {
         // We shuffle to make the sort different each time, and to ensure the list starts randomised
-        Shuffle.shuffle(list, r);
+        Shuffle.shuffleInplace(list, r);
     }
 
 
