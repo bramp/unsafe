@@ -1,6 +1,7 @@
 package net.bramp.unsafe.collection;
 
 import net.bramp.unsafe.UnsafeArrayList;
+import net.bramp.unsafe.UnsafeHelper;
 import net.bramp.unsafe.sort.InplaceQuickSort;
 import net.bramp.unsafe.sort.Shuffle;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -29,8 +30,10 @@ public abstract class AbstractUnsafeListState<T extends Comparable<T>> extends A
     public void setup() throws IllegalAccessException, InstantiationException {
         r.setSeed(size);
 
-        list = new UnsafeArrayList<T>(testClass(), size);
-        final T p = testClass().newInstance();
+        final Class clazz = testClass();
+        final T p = (T)UnsafeHelper.getUnsafe().allocateInstance(clazz); // Create a tmp instance
+
+        list = new UnsafeArrayList<T>(clazz, size);
         for (int i = 0; i < size; i++) {
             // Reuse single point (since it gets copied into array)
             list.add(newInstance(p));
