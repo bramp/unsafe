@@ -1,6 +1,6 @@
 package net.bramp.unsafe.collection;
 
-import net.bramp.unsafe.sort.InplaceQuickSort;
+import net.bramp.unsafe.UnsafeHelper;
 import net.bramp.unsafe.sort.QuickSort;
 import net.bramp.unsafe.sort.Shuffle;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -28,6 +28,18 @@ public abstract class AbstractArrayListState<T extends Comparable<T>> extends Ab
             // New Point for each entry
             list.add(newInstance());
         }
+    }
+
+    @Override
+    public long bytes() {
+        int size = list.size();
+        int referenceSize = 4; // TODO calculate this correctly
+
+        if (size > 0) {
+            long elementSize = UnsafeHelper.sizeOf(list.get(0));
+            return (referenceSize + elementSize) * size;
+        }
+        return 0;
     }
 
     @Setup(Level.Iteration)

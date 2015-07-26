@@ -9,6 +9,7 @@ import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Setup;
 
 public abstract class AbstractUnsafeListState<T extends Comparable<T>> extends AbstractListState {
+
     UnsafeArrayList<T> list;
 
     /**
@@ -38,6 +39,11 @@ public abstract class AbstractUnsafeListState<T extends Comparable<T>> extends A
             // Reuse single point (since it gets copied into array)
             list.add(newInstance(p));
         }
+    }
+
+    @Override
+    public long bytes() {
+        return list.bytes();
     }
 
     @Setup(Level.Iteration)

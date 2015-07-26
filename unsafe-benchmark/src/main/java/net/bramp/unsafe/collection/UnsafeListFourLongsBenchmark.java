@@ -1,9 +1,6 @@
 package net.bramp.unsafe.collection;
 
-import net.bramp.unsafe.UnsafeArrayList;
 import net.bramp.unsafe.examples.FourLongs;
-import net.bramp.unsafe.sort.InplaceQuickSort;
-import net.bramp.unsafe.sort.QuickSort;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
@@ -13,6 +10,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 
 import java.util.ArrayList;
+
+import static net.bramp.unsafe.collection.UnsafeListBenchmark.defaultOptionsBuilder;
 
 /**
  * Tests with arrays of FourLongs (4 longs).
@@ -69,24 +68,8 @@ public class UnsafeListFourLongsBenchmark {
     }
 
     public static void main(String[] args) throws RunnerException {
-        Options opt = new OptionsBuilder()
+        Options opt = defaultOptionsBuilder()
             .include(UnsafeListFourLongsBenchmark.class.getSimpleName())
-
-            // Warmup, and then run test iterations
-            .warmupIterations(2)
-            .measurementIterations(5)
-
-            // Each iteration call the test repeatedly for ~60 seconds
-            .mode(Mode.AverageTime)
-            .warmupTime(TimeValue.seconds(10))
-            .measurementTime(TimeValue.seconds(10))
-
-            // The size of the list
-            .param("size", "4000", "400000", "40000000")  // 40000000 uses ~3.1GiB of RAM. TODO work out what I expect
-
-            .forks(1)
-            //.addProfiler(StackProfiler.class)
-            //.addProfiler(GCProfiler.class)
             .build();
 
         new Runner(opt).run();

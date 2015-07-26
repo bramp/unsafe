@@ -51,6 +51,9 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
         this.elementSize      = UnsafeHelper.sizeOf(type) - firstFieldOffset;
         this.unsafe           = UnsafeHelper.getUnsafe();
 
+        // TODO Check if the class has any non-primitive fields. If so, throw an exception.
+        // new RuntimeException("Storing classes which contain references is dangerous, as the garbage collector will lose track of them thus is not supported")
+
         try {
             copier = new UnrolledUnsafeCopierBuilder()
                     .offset(firstFieldOffset)
@@ -118,6 +121,9 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
     public T set(int index, T element) {
         checkBounds(index);
 
+        // TODO checkIsX()
+        // TODO If we try and store an subclass of type, we will slice of some fields. Instead we should throw an exception.
+
         unsafe.copyMemory(element, firstFieldOffset, null, offset(index), elementSize);
 
         return null; // TODO
@@ -152,5 +158,13 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
     @Override
     public int size() {
         return size;
+    }
+
+    /**
+     * Returns the size of this object in bytes
+     * @return
+     */
+    public long bytes() {
+        return UnsafeHelper.sizeOf(this) + elementSize * capacity;
     }
 }
