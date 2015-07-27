@@ -1,22 +1,9 @@
 package net.bramp.unsafe;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import net.bramp.unsafe.collection.BenchmarkInterface;
-import net.bramp.unsafe.collection.UnsafeListEightLongsBenchmark;
-import net.bramp.unsafe.collection.UnsafeListFourLongsBenchmark;
-import net.bramp.unsafe.collection.UnsafeListLongPointBenchmark;
-import org.openjdk.jmh.util.Utils;
-import sun.management.VMManagement;
+import net.bramp.unsafe.collection.AbstractListTest;
+import net.bramp.unsafe.collection.ArrayListBenchmark;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 
 import static net.bramp.unsafe.MemoryUtils.buildJavaArg;
@@ -28,15 +15,7 @@ import static net.bramp.unsafe.MemoryUtils.pidMemoryUsage;
  */
 public class MemoryTest {
 
-    final static List<Integer> sizes = ImmutableList.<Integer>of(4000, 8000, 400000, 800000, 40000000, 80000000);
-    final static Map<String, BenchmarkInterface> benchmarks = ImmutableMap.<String, BenchmarkInterface>builder()
-            .put("ArrayList\t2", new UnsafeListLongPointBenchmark.ArrayListState())
-            .put("UnsafeArrayList\t2", new UnsafeListLongPointBenchmark.UnsafeListState())
-            .put("ArrayList\t4", new UnsafeListFourLongsBenchmark.ArrayListState())
-            .put("UnsafeArrayList\t4", new UnsafeListFourLongsBenchmark.UnsafeListState())
-            .put("ArrayList\t8", new UnsafeListEightLongsBenchmark.ArrayListState())
-            .put("UnsafeArrayList\t8", new UnsafeListEightLongsBenchmark.UnsafeListState())
-            .build();
+    final static List<Integer> sizes = ImmutableList.of(4000, 8000, 400000, 800000, 40000000, 80000000);
 
     static Process childProcess;
 
@@ -56,7 +35,7 @@ public class MemoryTest {
 
             // Loop through starting each sub process
             for (Integer size : sizes) {
-                for (String benchmark : benchmarks.keySet()) {
+                for (String benchmark : ArrayListBenchmark.benchmarks.keySet()) {
 
                     List<String> javaArgs = buildJavaArg();
                     javaArgs.add(benchmark);
@@ -72,7 +51,7 @@ public class MemoryTest {
             }
 
         } else {
-            BenchmarkInterface benchmark = benchmarks.get(args[0]);
+            AbstractListTest benchmark = ArrayListBenchmark.benchmarks.get(args[0]);
             int size = Integer.parseInt(args[1]);
 
             benchmark.setSize(size);

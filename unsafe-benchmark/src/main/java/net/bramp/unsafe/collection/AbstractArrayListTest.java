@@ -6,11 +6,13 @@ import net.bramp.unsafe.sort.Shuffle;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.ArrayList;
 
-public abstract class AbstractArrayListState<T extends Comparable<T>> extends AbstractListState {
-    ArrayList<T> list;
+public abstract class AbstractArrayListTest<T extends Comparable<T>> extends AbstractListTest {
+
+    protected ArrayList<T> list;
 
     /**
      * Create a new instance of the test class, with random fields
@@ -19,11 +21,9 @@ public abstract class AbstractArrayListState<T extends Comparable<T>> extends Ab
      */
     public abstract T newInstance();
 
-    @Setup(Level.Trial)
     public void setup() {
-        r.setSeed(size); // TODO Use iteration some how
-
         list = new ArrayList<T>(size);
+
         for (int i = 0; i < size; i++) {
             // New Point for each entry
             list.add(newInstance());
@@ -42,16 +42,17 @@ public abstract class AbstractArrayListState<T extends Comparable<T>> extends Ab
         return 0;
     }
 
-    @Setup(Level.Iteration)
-    public void shuffle() throws IllegalAccessException, InstantiationException {
-        // We shuffle to make the sort different each time, and to ensure the list starts randomised
+    public void shuffle() {
         Shuffle.shuffle(list, r);
     }
 
-    @Benchmark
-    public void testListSort() {
-        // We shuffle to make the sort different each time, and to ensure the list starts randomised
+    public void sort() {
         Shuffle.shuffle(list, r);
         QuickSort.quickSort(list);
+    }
+
+    @Override
+    public void iterateInPlace(Blackhole bh) {
+        throw new RuntimeException("Test not applicable to ArrayList");
     }
 }

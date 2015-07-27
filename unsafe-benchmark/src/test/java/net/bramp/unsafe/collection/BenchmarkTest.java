@@ -2,6 +2,8 @@ package net.bramp.unsafe.collection;
 
 import com.google.common.collect.Ordering;
 import net.bramp.unsafe.JMHHelper;
+import net.bramp.unsafe.collection.tests.ArrayListLongPoint;
+import net.bramp.unsafe.collection.tests.UnsafeListLongPoint;
 import org.junit.Test;
 import org.openjdk.jmh.infra.Blackhole;
 
@@ -13,29 +15,29 @@ public class BenchmarkTest {
 
     @Test
     public void testArrayListBenchmarks() throws InstantiationException, IllegalAccessException {
-        UnsafeListLongPointBenchmark.ArrayListState state = new UnsafeListLongPointBenchmark.ArrayListState();
+        ArrayListLongPoint state = new ArrayListLongPoint();
         state.size = 1000;
 
         state.setup();
-        state.testListIterate(bh);
-        state.testListSort();
+        state.iterate(bh);
+        state.sort();
         state.shuffle();
-        state.testListSort();
+        state.sort();
 
         assertTrue(Ordering.natural().isOrdered(state.list));
     }
 
     @Test
     public void testUnsafeListBenchmarks() throws InstantiationException, IllegalAccessException {
-        UnsafeListLongPointBenchmark.UnsafeListState state = new UnsafeListLongPointBenchmark.UnsafeListState();
+        UnsafeListLongPoint state = new UnsafeListLongPoint();
         state.size = 1000;
 
         state.setup();
-        state.testListIterate(bh);
-        state.testListIterateInPlace(bh);
-        state.testListSortInPlace();
+        state.iterate(bh);
+        state.iterateInPlace(bh);
+        state.sort();
         state.shuffle();
-        state.testListSortInPlace();
+        state.sort();
 
         assertTrue(Ordering.natural().isOrdered(state.list));
     }

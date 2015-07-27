@@ -22,7 +22,7 @@ Benchmarks
 ```bash
 cd unsafe-benchmark
 mvn
-java -jar target/benchmarks.jar
+java -jar target/benchmarks.jar | tee logs
 ...
 # JMH 1.10 (released 5 days ago)
 # VM invoker: /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
