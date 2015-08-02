@@ -19,103 +19,77 @@ the collection, instead copies the elements directly into the list. This has a f
 Benchmarks
 ==========
 
+Read more about the benchmarks at bramp.net TODO add link.
+
 ```bash
 cd unsafe-benchmark
 mvn
 java -jar target/benchmarks.jar | tee logs
 ...
-# JMH 1.10 (released 5 days ago)
-# VM invoker: /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+# JMH 1.10.3 (released 9 days ago)
+# VM version: JDK 1.8.0_45-internal, VM 25.45-b02
 
-Benchmark                                        Mode  Cnt          Score         Error  Units
-UnrolledCopierBenchmark.LoopState.test          thrpt   25  198289612.771 ± 1067151.047  ops/s
-UnrolledCopierBenchmark.HandUnrolledState.test  thrpt   25  455263443.453 ± 2379784.462  ops/s
-UnrolledCopierBenchmark.UnrolledState.test      thrpt   25  451185321.134 ± 5573610.904  ops/s
+Benchmark                                       Mode     Cnt     Score          Error  Units
+UnrolledCopierBenchmark.HandUnrolledState.test  thrpt    25      438819259.527  ±      14364692.101  ops/s
+UnrolledCopierBenchmark.LoopState.test          thrpt    25      196408390.244  ±      2173851.339   ops/s
+UnrolledCopierBenchmark.UnrolledState.test      thrpt    25      458324068.892  ±      6192069.477   ops/s
 
-Benchmark                                                              (size)  Mode  Cnt   Score    Error  Units
-UnsafeListLongPointBenchmark.ArrayListState.testListIterate          40000000  avgt    5   1.198 ±  0.021   s/op
-UnsafeListLongPointBenchmark.ArrayListState.testListSort             40000000  avgt    5  31.979 ±  1.502   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterate         40000000  avgt    5   0.894 ±  0.006   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterateInPlace  40000000  avgt    5   0.217 ±  0.001   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListSortInPlace     40000000  avgt    5  15.323 ±  0.446   s/op
+Benchmark                                  (clazz)                      (size)    Mode   Cnt    Score   Error  Units
+ArrayListBenchmark.testIterate             ArrayList<LongPoint>         80000000  avgt   5      2.266   ±      0.229  s/op
+ArrayListBenchmark.testIterate             ArrayList<LongPoint>         20000000  avgt   5      0.552   ±      0.019  s/op
+ArrayListBenchmark.testIterate             ArrayList<LongPoint>         5000000   avgt   5      0.136   ±      0.004  s/op
+ArrayListBenchmark.testSort                ArrayList<LongPoint>         80000000  avgt   5      70.310  ±      3.939  s/op
+ArrayListBenchmark.testSort                ArrayList<LongPoint>         20000000  avgt   5      14.754  ±      0.541  s/op
+ArrayListBenchmark.testSort                ArrayList<LongPoint>         5000000   avgt   5      3.250   ±      0.139  s/op
 
-UnsafeListFourLongsBenchmark.ArrayListState.testListIterate          40000000  avgt    5   1.197 ±  0.145   s/op
-UnsafeListFourLongsBenchmark.ArrayListState.testListSort             40000000  avgt    5  35.108 ±  2.046   s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListIterate         40000000  avgt    5   1.064 ±  0.005   s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListIterateInPlace  40000000  avgt    5   0.294 ±  0.001   s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListSortInPlace     40000000  avgt    5  18.722 ±  1.442   s/op
+Benchmark                                  (clazz)                      (size)    Mode   Cnt    Score   Error  Units
+ArrayListBenchmark.testIterate             UnsafeArrayList<LongPoint>   80000000  avgt   5      1.790   ±      0.030  s/op
+ArrayListBenchmark.testIterate             UnsafeArrayList<LongPoint>   20000000  avgt   5      0.449   ±      0.016  s/op
+ArrayListBenchmark.testIterate             UnsafeArrayList<LongPoint>   5000000   avgt   5      0.112   ±      0.001  s/op
+ArrayListBenchmark.testListIterateInPlace  UnsafeArrayList<LongPoint>   80000000  avgt   5      0.442   ±      0.023  s/op
+ArrayListBenchmark.testListIterateInPlace  UnsafeArrayList<LongPoint>   20000000  avgt   5      0.110   ±      0.003  s/op
+ArrayListBenchmark.testListIterateInPlace  UnsafeArrayList<LongPoint>   5000000   avgt   5      0.028   ±      0.002  s/op
+ArrayListBenchmark.testSort                UnsafeArrayList<LongPoint>   80000000  avgt   5      18.690  ±      3.158  s/op
+ArrayListBenchmark.testSort                UnsafeArrayList<LongPoint>   20000000  avgt   5      3.414   ±      0.034  s/op
+ArrayListBenchmark.testSort                UnsafeArrayList<LongPoint>   5000000   avgt   5      0.682   ±      0.014  s/op
 
-UnsafeListEightLongsBenchmark.ArrayListState.testListIterate          4000000  avgt    5   0.114 ±  0.014   s/op
-UnsafeListEightLongsBenchmark.ArrayListState.testListSort             4000000  avgt    5   3.751 ±  0.262   s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListIterate         4000000  avgt    5   0.132 ±  0.002   s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListIterateInPlace  4000000  avgt    5   0.046 ±  0.001   s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListSortInPlace     4000000  avgt    5   1.380 ±  0.033   s/op
-```
+Benchmark                                  (clazz)                      (size)    Mode   Cnt    Score   Error  Units
+ArrayListBenchmark.testIterate             ArrayList<FourLongs>         80000000  avgt   5      2.277   ±      0.211  s/op
+ArrayListBenchmark.testIterate             ArrayList<FourLongs>         20000000  avgt   5      0.557   ±      0.023  s/op
+ArrayListBenchmark.testIterate             ArrayList<FourLongs>         5000000   avgt   5      0.140   ±      0.007  s/op
+ArrayListBenchmark.testSort                ArrayList<FourLongs>         80000000  avgt   5      79.673  ±      6.119  s/op
+ArrayListBenchmark.testSort                ArrayList<FourLongs>         20000000  avgt   5      16.705  ±      1.353  s/op
+ArrayListBenchmark.testSort                ArrayList<FourLongs>         5000000   avgt   5      3.673   ±      0.156  s/op
 
-```
-UnsafeListLongPointBenchmark.ArrayListState.testListIterate          40000000  avgt    5   1.198 ±  0.021   s/op
-UnsafeListLongPointBenchmark.ArrayListState.testListSort                 4000  avgt    5   0.001 ±  0.001   s/op
-UnsafeListLongPointBenchmark.ArrayListState.testListSort               400000  avgt    5   0.159 ±  0.002   s/op
-UnsafeListLongPointBenchmark.ArrayListState.testListSort             40000000  avgt    5  31.979 ±  1.502   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterate             4000  avgt    5  ≈ 10⁻⁴            s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterate           400000  avgt    5   0.010 ±  0.001   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterate         40000000  avgt    5   0.894 ±  0.006   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterateInPlace      4000  avgt    5  ≈ 10⁻⁵            s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterateInPlace    400000  avgt    5   0.002 ±  0.001   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterateInPlace  40000000  avgt    5   0.217 ±  0.001   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListSortInPlace         4000  avgt    5  ≈ 10⁻³            s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListSortInPlace       400000  avgt    5   0.051 ±  0.001   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListSortInPlace     40000000  avgt    5  15.323 ±  0.446   s/op
-UnsafeListFourLongsBenchmark.ArrayListState.testListIterate              4000  avgt    5  ≈ 10⁻⁵            s/op
-UnsafeListFourLongsBenchmark.ArrayListState.testListIterate            400000  avgt    5   0.010 ±  0.001   s/op
-UnsafeListFourLongsBenchmark.ArrayListState.testListIterate          40000000  avgt    5   1.197 ±  0.145   s/op
-UnsafeListFourLongsBenchmark.ArrayListState.testListSort                 4000  avgt    5   0.001 ±  0.001   s/op
-UnsafeListFourLongsBenchmark.ArrayListState.testListSort               400000  avgt    5   0.186 ±  0.002   s/op
-UnsafeListFourLongsBenchmark.ArrayListState.testListSort             40000000  avgt    5  35.108 ±  2.046   s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListIterate             4000  avgt    5  ≈ 10⁻⁴            s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListIterate           400000  avgt    5   0.011 ±  0.001   s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListIterate         40000000  avgt    5   1.064 ±  0.005   s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListIterateInPlace      4000  avgt    5  ≈ 10⁻⁵            s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListIterateInPlace    400000  avgt    5   0.003 ±  0.001   s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListIterateInPlace  40000000  avgt    5   0.294 ±  0.001   s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListSortInPlace         4000  avgt    5   0.001 ±  0.001   s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListSortInPlace       400000  avgt    5   0.071 ±  0.001   s/op
-UnsafeListFourLongsBenchmark.UnsafeListState.testListSortInPlace     40000000  avgt    5  18.722 ±  1.442   s/op
-UnsafeListEightLongsBenchmark.ArrayListState.testListIterate              400  avgt    5  ≈ 10⁻⁶            s/op
-UnsafeListEightLongsBenchmark.ArrayListState.testListIterate            40000  avgt    5   0.001 ±  0.001   s/op
-UnsafeListEightLongsBenchmark.ArrayListState.testListIterate          4000000  avgt    5   0.114 ±  0.014   s/op
-UnsafeListEightLongsBenchmark.ArrayListState.testListSort                 400  avgt    5  ≈ 10⁻⁴            s/op
-UnsafeListEightLongsBenchmark.ArrayListState.testListSort               40000  avgt    5   0.016 ±  0.001   s/op
-UnsafeListEightLongsBenchmark.ArrayListState.testListSort             4000000  avgt    5   3.751 ±  0.262   s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListIterate             400  avgt    5  ≈ 10⁻⁵            s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListIterate           40000  avgt    5   0.001 ±  0.001   s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListIterate         4000000  avgt    5   0.132 ±  0.002   s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListIterateInPlace      400  avgt    5  ≈ 10⁻⁵            s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListIterateInPlace    40000  avgt    5  ≈ 10⁻³            s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListIterateInPlace  4000000  avgt    5   0.046 ±  0.001   s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListSortInPlace         400  avgt    5  ≈ 10⁻⁴            s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListSortInPlace       40000  avgt    5   0.010 ±  0.001   s/op
-UnsafeListEightLongsBenchmark.UnsafeListState.testListSortInPlace     4000000  avgt    5   1.380 ±  0.033   s/op
+Benchmark                                  (clazz)                      (size)    Mode   Cnt    Score   Error  Units
+ArrayListBenchmark.testIterate             UnsafeArrayList<FourLongs>   80000000  avgt   5      2.126   ±      0.019  s/op
+ArrayListBenchmark.testIterate             UnsafeArrayList<FourLongs>   20000000  avgt   5      0.533   ±      0.004  s/op
+ArrayListBenchmark.testIterate             UnsafeArrayList<FourLongs>   5000000   avgt   5      0.133   ±      0.002  s/op
+ArrayListBenchmark.testListIterateInPlace  UnsafeArrayList<FourLongs>   80000000  avgt   5      0.648   ±      0.019  s/op
+ArrayListBenchmark.testListIterateInPlace  UnsafeArrayList<FourLongs>   20000000  avgt   5      0.163   ±      0.005  s/op
+ArrayListBenchmark.testListIterateInPlace  UnsafeArrayList<FourLongs>   5000000   avgt   5      0.040   ±      0.006  s/op
+ArrayListBenchmark.testSort                UnsafeArrayList<FourLongs>   80000000  avgt   5      24.822  ±      0.790  s/op
+ArrayListBenchmark.testSort                UnsafeArrayList<FourLongs>   20000000  avgt   5      4.843   ±      0.075  s/op
+ArrayListBenchmark.testSort                UnsafeArrayList<FourLongs>   5000000   avgt   5      1.020   ±      0.017  s/op
 
-```
+Benchmark                                  (clazz)                      (size)    Mode   Cnt    Score   Error  Units
+ArrayListBenchmark.testIterate             ArrayList<EightLongs>        80000000  avgt   5      2.792   ±      0.072  s/op
+ArrayListBenchmark.testIterate             ArrayList<EightLongs>        20000000  avgt   5      0.564   ±      0.022  s/op
+ArrayListBenchmark.testIterate             ArrayList<EightLongs>        5000000   avgt   5      0.138   ±      0.007  s/op
+ArrayListBenchmark.testSort                ArrayList<EightLongs>        80000000  avgt   5      97.687  ±      4.860  s/op
+ArrayListBenchmark.testSort                ArrayList<EightLongs>        20000000  avgt   5      20.084  ±      1.124  s/op
+ArrayListBenchmark.testSort                ArrayList<EightLongs>        5000000   avgt   5      4.474   ±      0.248  s/op
 
-`` 2015-07-25:
-UnsafeListLongPointBenchmark.ArrayListState.testListIterate          40000000  avgt    5   1.337 ±  0.139   s/op
-UnsafeListLongPointBenchmark.ArrayListState.testListSort             40000000  avgt    5  38.614 ±  4.235   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterate         40000000  avgt    5   0.928 ±  0.152   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterateInPlace  40000000  avgt    5   0.190 ±  0.012   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListSortInPlace     40000000  avgt    5  14.651 ±  1.667   s/op
-
-UnsafeListLongPointBenchmark.ArrayListState.testListIterate              4000  avgt    5  ≈ 10⁻⁵            s/op
-UnsafeListLongPointBenchmark.ArrayListState.testListIterate            400000  avgt    5   0.005 ±  0.001   s/op
-UnsafeListLongPointBenchmark.ArrayListState.testListSort                 4000  avgt    5   0.001 ±  0.001   s/op
-UnsafeListLongPointBenchmark.ArrayListState.testListSort               400000  avgt    5   0.137 ±  0.007   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterate             4000  avgt    5  ≈ 10⁻⁴            s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterate           400000  avgt    5   0.009 ±  0.001   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterateInPlace      4000  avgt    5  ≈ 10⁻⁵            s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListIterateInPlace    400000  avgt    5   0.002 ±  0.001   s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListSortInPlace         4000  avgt    5  ≈ 10⁻³            s/op
-UnsafeListLongPointBenchmark.UnsafeListState.testListSortInPlace       400000  avgt    5   0.045 ±  0.003   s/op
+Benchmark                                  (clazz)                      (size)    Mode   Cnt    Score   Error  Units
+ArrayListBenchmark.testIterate             UnsafeArrayList<EightLongs>  80000000  avgt   5      2.672   ±      0.322  s/op
+ArrayListBenchmark.testIterate             UnsafeArrayList<EightLongs>  20000000  avgt   5      0.688   ±      0.014  s/op
+ArrayListBenchmark.testIterate             UnsafeArrayList<EightLongs>  5000000   avgt   5      0.171   ±      0.003  s/op
+ArrayListBenchmark.testListIterateInPlace  UnsafeArrayList<EightLongs>  80000000  avgt   5      0.941   ±      0.032  s/op
+ArrayListBenchmark.testListIterateInPlace  UnsafeArrayList<EightLongs>  20000000  avgt   5      0.236   ±      0.008  s/op
+ArrayListBenchmark.testListIterateInPlace  UnsafeArrayList<EightLongs>  5000000   avgt   5      0.058   ±      0.002  s/op
+ArrayListBenchmark.testSort                UnsafeArrayList<EightLongs>  80000000  avgt   5      40.697  ±      0.743  s/op
+ArrayListBenchmark.testSort                UnsafeArrayList<EightLongs>  20000000  avgt   5      7.608   ±      0.267  s/op
+ArrayListBenchmark.testSort                UnsafeArrayList<EightLongs>  5000000   avgt   5      1.729   ±      0.101  s/op
 ```
 
 
