@@ -17,13 +17,13 @@ import java.util.Map;
 public class ArrayListBenchmark {
 
     public final static Map<String, AbstractListTest> benchmarks = ImmutableMap.<String, AbstractListTest>builder()
-            .put("ArrayList<LongPoint>", new ArrayListLongPoint())
-            .put("UnsafeArrayList<LongPoint>", new UnsafeListLongPoint())
-            .put("ArrayList<FourLongs>", new ArrayListFourLongs())
-            .put("UnsafeArrayList<FourLongs>", new UnsafeListFourLongs())
-            .put("ArrayList<EightLongs>", new ArrayListEightLongs())
-            .put("UnsafeArrayList<EightLongs>", new UnsafeListEightLongs())
-            .build();
+        .put("ArrayList LongPoint", new ArrayListLongPoint())
+        .put("UnsafeArrayList   LongPoint", new UnsafeListLongPoint())
+        .put("ArrayList FourLongs", new ArrayListFourLongs())
+        .put("UnsafeArrayList   FourLongs", new UnsafeListFourLongs())
+        .put("ArrayList EightLongs", new ArrayListEightLongs())
+        .put("UnsafeArrayList   EightLongs", new UnsafeListEightLongs())
+        .build();
 
     AbstractListTest test; // Holds the code under test
 
@@ -31,11 +31,17 @@ public class ArrayListBenchmark {
     public int size;
 
     @Param("null")
-    public String clazz;
+    public String list;
+
+    @Param("null")
+    public String type;
 
     @Setup(Level.Trial)
     public void setup() throws Exception {
-        test = benchmarks.get(clazz);
+        test = benchmarks.get(list + "\t" + type);
+        if (test == null) {
+            throw new RuntimeException("Can't find requested test " + list + " " + type);
+        }
         test.setSize(size);
         test.setRandomSeed(size);  // TODO Use iteration some how
         test.setup();
@@ -49,7 +55,6 @@ public class ArrayListBenchmark {
 
     @Benchmark
     public void testSort() {
-        // We shuffle to make the sort different each time, and to ensure the list starts randomised
         test.sort();
     }
 
@@ -66,6 +71,7 @@ public class ArrayListBenchmark {
     public static void main(String[] args) throws RunnerException {
 
         for (String benchmark : benchmarks.keySet()) {
+            String[] parts =  benchmark.split("\t");
             Options opt = new OptionsBuilder()
                 .include(ArrayListBenchmark.class.getSimpleName())
 
@@ -80,7 +86,8 @@ public class ArrayListBenchmark {
 
                 // The size of the list
                 .param("size", "80000000", "20000000", "5000000")
-                .param("clazz", benchmark)
+                .param("list", parts[0])
+                .param("type", parts[1])
 
                 .forks(1)
                 .jvmArgs("-Xmx16g")
