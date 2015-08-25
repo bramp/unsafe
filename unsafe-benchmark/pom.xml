@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.bramp.unsafe</groupId>
     <artifactId>unsafe-benchmark</artifactId>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Unsafe Benchmark</name>
@@ -12,13 +13,13 @@
     <parent>
         <groupId>net.bramp.unsafe</groupId>
         <artifactId>unsafe-parent</artifactId>
-        <version>1.0</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
     <properties>
         <jmh.version>1.10.4</jmh.version>
         <uberjar.name>benchmarks</uberjar.name>
-        <unsafe.version>1.0</unsafe.version>
+        <unsafe.version>1.0-SNAPSHOT</unsafe.version>
     </properties>
 
     <dependencies>

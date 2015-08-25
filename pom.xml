@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.bramp.unsafe</groupId>
     <artifactId>unsafe-parent</artifactId>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Unsafe</name>
@@ -28,7 +29,7 @@
     <scm>
         <url>https://github.com/bramp/unsafe</url>
         <connection>scm:git:git@github.com:bramp/unsafe.git</connection>
-        <tag>unsafe-parent-1.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <modules>
@@ -41,8 +42,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <javac.target>1.6</javac.target>
+        <unsafe.version>1.0-SNAPSHOT</unsafe.version>
     </properties>
 
     <prerequisites>
@@ -217,7 +218,7 @@
                             <goal>aggregate</goal>
                         </goals>
                         <phase>site</phase>
-                        <configuration />
+                        <configuration></configuration>
                     </execution>
                 </executions>
             </plugin>
