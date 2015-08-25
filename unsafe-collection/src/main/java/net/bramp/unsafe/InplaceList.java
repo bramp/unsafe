@@ -6,9 +6,9 @@ public interface InplaceList<E> extends List<E> {
 
     /**
      * Copies the element at index into dest
-     * @param dest
-     * @param index
-     * @return
+     * @param dest The destination object
+     * @param index The index of the object to get
+     * @return The fetched object
      */
     public E get(E dest, int index);
 

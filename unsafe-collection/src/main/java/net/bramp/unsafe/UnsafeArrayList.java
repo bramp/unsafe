@@ -10,7 +10,7 @@ import java.util.RandomAccess;
 
 /**
  * ArrayList implemented using Unsafe operations
- * @See http://www.docjar.com/docs/api/sun/misc/Unsafe.html
+ * @see <a href="http://www.docjar.com/docs/api/sun/misc/Unsafe.html">http://www.docjar.com/docs/api/sun/misc/Unsafe.html</a>
  *
  * This is not thread safe
  */
@@ -103,10 +103,10 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
     }
 
     /**
-     * Gets and copies into dest
-     * @param dest
-     * @param index
-     * @return
+     * Copies the element at index into dest
+     * @param dest The destination object
+     * @param index The index of the object to get
+     * @return The fetched object
      */
     public T get(T dest, int index) {
         checkBounds(index);
@@ -131,9 +131,8 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
 
     /**
      * Swaps two elements
-     * TODO TEST
-     * @param i
-     * @param j
+     * @param i Index of first element
+     * @param j Index of second element
      */
     public void swap(int i, int j) {
         if (i == j)
@@ -161,8 +160,8 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
     }
 
     /**
-     * Returns the size of this object in bytes
-     * @return
+     *
+     * @return The size of this object in bytes
      */
     public long bytes() {
         return UnsafeHelper.sizeOf(this) + elementSize * capacity;
