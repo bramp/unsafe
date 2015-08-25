@@ -19,29 +19,24 @@
     <properties>
         <jmh.version>1.10.4</jmh.version>
         <uberjar.name>benchmarks</uberjar.name>
-        <unsafe.version>1.0-SNAPSHOT</unsafe.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>net.bramp.unsafe</groupId>
             <artifactId>unsafe-unroller</artifactId>
-            <version>${unsafe.version}</version>
         </dependency>
         <dependency>
             <groupId>net.bramp.unsafe</groupId>
             <artifactId>unsafe-helper</artifactId>
-            <version>${unsafe.version}</version>
         </dependency>
         <dependency>
             <groupId>net.bramp.unsafe</groupId>
             <artifactId>unsafe-collection</artifactId>
-            <version>${unsafe.version}</version>
         </dependency>
         <dependency>
             <groupId>net.bramp.unsafe</groupId>
             <artifactId>unsafe-tests</artifactId>
-            <version>${unsafe.version}</version>
         </dependency>
 
         <dependency>
