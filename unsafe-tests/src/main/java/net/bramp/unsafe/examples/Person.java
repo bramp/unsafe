@@ -27,9 +27,8 @@ public class Person {
     }
 
     /**
-     * Returns age in years.
-     * Not accurate, but only used as an example.
-     * @return
+     * Note: Not accurate, but only used as an example.
+     * @return the age of the person in years.
      */
     public int getAge() {
         return (int) ((System.currentTimeMillis() - birthday) / 1000 / 60 / 60 / 24 / 365);
