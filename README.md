@@ -1,6 +1,5 @@
-Unsafe
-------
-by Andrew Brampton (bramp.net)
+# Unsafe
+by Andrew Brampton ([bramp.net](https://bramp.net))
 
 This is a collection of tools that make use of the [sun.misc.Unsafe class](http://www.docjar.com/docs/api/sun/misc/Unsafe.html).
 This Unsafe class allows direct access to memory within the JVM, which is extremely dangerous, but fun :).
@@ -16,8 +15,7 @@ the collection, instead copies the elements directly into the list. This has a f
 * unsafe-tests - Some simple test classes to help with tests of the other modules.
 
 
-Benchmarks
-==========
+## Benchmarks
 
 Read more about the benchmarks at bramp.net TODO add link.
 
@@ -93,15 +91,13 @@ ArrayListBenchmark.testSort                UnsafeArrayList<EightLongs>  5000000 
 ```
 
 
-Further Reading
-==============
+## Further Reading
 * [Java Objects Memory Structure](http://www.codeinstructions.com/2008/12/java-objects-memory-structure.html)
 * [sun.misc.Unsafe Javadoc](http://www.docjar.com/docs/api/sun/misc/Unsafe.html)
 * [OpenJDK Unsafe source](http://hg.openjdk.java.net/jdk7/jdk7/jdk/file/9b8c96f96a0f/src/share/classes/sun/misc/Unsafe.java)
 * [The infamous sun.misc.Unsafe explained](http://mydailyjava.blogspot.com/2013/12/sunmiscunsafe.html)
 * [Dangerous Code: How to be Unsafe with Java Classes & Objects in Memory](https://zeroturnaround.com/rebellabs/dangerous-code-how-to-be-unsafe-with-java-classes-objects-in-memory/)
 
-
-JMH
+### JMH
 * [Introduction to JMH](http://java-performance.info/jmh/)
 * [Hashmap Tests](https://github.com/mikvor/hashmapTest/blob/master/src/main/java/tests/MapTestRunner.java)
