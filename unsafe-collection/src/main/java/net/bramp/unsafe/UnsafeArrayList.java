@@ -61,13 +61,18 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
                     .build(this.unsafe);
 
             // Temp working space
-            tmp = (T) unsafe.allocateInstance(type);
+            tmp = newInstance();
 
         } catch (Exception e) {
             throw Throwables.propagate(e);
         }
 
         setCapacity(initialCapacity);
+    }
+
+    @SuppressWarnings("unchecked")
+    private T newInstance() throws InstantiationException {
+        return (T) unsafe.allocateInstance(type);
     }
 
     private void setCapacity(int capacity) {
@@ -92,7 +97,7 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
     @Override
     public T get(int index) {
         try {
-            return get((T) unsafe.allocateInstance(type), index);
+            return get(newInstance(), index);
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
         }
