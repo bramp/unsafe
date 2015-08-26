@@ -4,7 +4,7 @@
 
     <groupId>net.bramp.unsafe</groupId>
     <artifactId>unsafe-unroller</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
 
     <name>Unsafe Unroller</name>
     <description>Generates loop unrolling bytecode at runtime</description>
@@ -12,7 +12,7 @@
     <parent>
         <groupId>net.bramp.unsafe</groupId>
         <artifactId>unsafe-parent</artifactId>
-        <version>1.0</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <properties>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>net.bramp.unsafe</groupId>
             <artifactId>unsafe-helper</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>net.bramp.unsafe</groupId>
             <artifactId>unsafe-tests</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>

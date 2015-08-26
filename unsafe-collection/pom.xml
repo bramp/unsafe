@@ -5,7 +5,7 @@
     <groupId>net.bramp.unsafe</groupId>
     <artifactId>unsafe-collection</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
 
     <name>Unsafe Collection</name>
     <description>Collections that use the Unsafe class for storing objects</description>
@@ -13,19 +13,19 @@
     <parent>
         <groupId>net.bramp.unsafe</groupId>
         <artifactId>unsafe-parent</artifactId>
-        <version>1.0</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>net.bramp.unsafe</groupId>
             <artifactId>unsafe-helper</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.bramp.unsafe</groupId>
             <artifactId>unsafe-unroller</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>net.bramp.unsafe</groupId>
             <artifactId>unsafe-tests</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
