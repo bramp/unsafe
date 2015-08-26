@@ -107,7 +107,7 @@
             <id>release-sign-artifacts</id>
             <activation>
                 <property>
-                    <name>release</name>
+                    <name>performRelease</name>
                     <value>true</value>
                 </property>
             </activation>
@@ -119,8 +119,7 @@
                         <version>1.6</version>
                         <executions>
                             <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
+                                <phase>install</phase>
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
@@ -182,9 +181,6 @@
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5.2</version>
-                    <configuration>
-                        <releaseProfiles>release</releaseProfiles>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.sonatype.plugins</groupId>
