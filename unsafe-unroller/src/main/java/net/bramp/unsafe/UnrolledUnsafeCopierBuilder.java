@@ -14,7 +14,7 @@ import static net.bytebuddy.matcher.ElementMatchers.named;
 /**
  * This constructs a class specialised for copying the exact number of bytes specified.
  * It uses runtime byte code generation to unsafe a copy loop, for optimal performance.
- * The unrolled code looks like
+ * The unrolled code looks like:
  *   unsafe.putLong(dest, destOffset, unsafe.getLong(srcAddress));
  *   destOffset += 8; srcAddress += 8
  *   ...
@@ -47,12 +47,13 @@ public class UnrolledUnsafeCopierBuilder {
 
     /**
      * Constructs a new Copier using the passed in Unsafe instance
-     * @param unsafe
-     * @return
+     * @param unsafe The sun.misc.Unsafe instance this copier uses
+     * @return The new UnsageCopier built with the specific parameters
      * @throws IllegalAccessException
      * @throws InstantiationException
      * @throws NoSuchMethodException
      * @throws InvocationTargetException
+     * @throws IllegalArgumentException if any argument is invalid
      */
     public UnsafeCopier build(Unsafe unsafe) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
 

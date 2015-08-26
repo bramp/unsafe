@@ -16,9 +16,9 @@ import net.bramp.unsafe.InplaceList;
 public class InplaceQuickSort {
 
     /**
-     * public method exposed to client, sorts given array using QuickSort
-     * Algorithm in Java
-     * @param array
+     * Sorts given array using QuickSort
+     * @param array to be sorted.
+     * @param <E> generic type of list
      */
     public static<E extends Comparable<E>> void quickSort(InplaceList<E> array) {
         if (array.isEmpty()) {
@@ -33,6 +33,7 @@ public class InplaceQuickSort {
      * @param array input array
      * @param startIdx start index of the array
      * @param endIdx end index of the array
+     * @param <E> generic type of list
      */
     public static<E extends Comparable<E>> void recursiveQuickSort(InplaceList<E> array, int startIdx, int endIdx) {
 
@@ -56,6 +57,7 @@ public class InplaceQuickSort {
      * @param array array to partitioned
      * @param left lower bound of the array
      * @param right upper bound of the array
+     * @param <E> generic type of list
      * @return the partition index
      */
     public static<E extends Comparable<E>> int partition(InplaceList<E> array, int left, int right) {

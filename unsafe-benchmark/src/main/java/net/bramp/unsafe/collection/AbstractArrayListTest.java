@@ -15,9 +15,7 @@ public abstract class AbstractArrayListTest<T extends Comparable<T>> extends Abs
     protected ArrayList<T> list;
 
     /**
-     * Create a new instance of the test class, with random fields
-     *
-     * @return
+     * @return a new instance of the test class, with random fields
      */
     public abstract T newInstance();
 

@@ -10,17 +10,15 @@ public abstract class AbstractUnsafeListTest<T extends Comparable<T>> extends Ab
     protected UnsafeArrayList<T> list;
 
     /**
-     * Class used within the generic list
-     *
-     * @return
+     * @return the class used within the generic list
      */
     public abstract Class<T> testClass();
 
     /**
-     * Create a new instance of the test class, with random fields
+     * Populates the fields of obj with random values.
      *
-     * @param obj
-     * @return
+     * @param obj The object to populate
+     * @return obj
      */
     public abstract T newInstance(T obj);
 

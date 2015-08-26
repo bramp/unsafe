@@ -15,9 +15,9 @@ import java.util.List;
 public class QuickSort {
 
     /**
-     * public method exposed to client, sorts given array using QuickSort
-     * Algorithm in Java
-     * @param array
+     * Sorts given array using QuickSort
+     * @param array to be sorted.
+     * @param <E> generic type of list
      */
     public static<E extends Comparable<E>> void quickSort(List<E> array) {
         if (array.isEmpty()) {
@@ -32,6 +32,7 @@ public class QuickSort {
      * @param array input array
      * @param startIdx start index of the array
      * @param endIdx end index of the array
+     * @param <E> generic type of list
      */
     public static<E extends Comparable<E>> void recursiveQuickSort(List<E> array, int startIdx, int endIdx) {
 
@@ -55,6 +56,7 @@ public class QuickSort {
      * @param array array to partitioned
      * @param left lower bound of the array
      * @param right upper bound of the array
+     * @param <E> generic type of list
      * @return the partition index
      */
     public static<E extends Comparable<E>> int partition(List<E> array, int left, int right) {

@@ -17,8 +17,7 @@ import java.util.List;
 public final class MemoryUtils {
 
     /**
-     * Returns memory usage according to Runtime
-     * @return
+     * @return memory usage according to Runtime
      */
     public static String memoryUsage() {
         final Runtime runtime = Runtime.getRuntime();
@@ -34,8 +33,7 @@ public final class MemoryUtils {
     }
 
     /**
-     * Returns memory usage based on ps
-     * @return
+     * @return memory usage based on ps
      * @throws IOException
      * @throws InvocationTargetException
      * @throws NoSuchMethodException
@@ -46,6 +44,13 @@ public final class MemoryUtils {
         return pidMemoryUsage(getPid());
     }
 
+    /**
+     * @return the pid of this process
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     */
     public static int getPid() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         RuntimeMXBean runtime = ManagementFactory.getRuntimeMXBean();
         Field jvm = runtime.getClass().getDeclaredField("jvm");
@@ -60,7 +65,6 @@ public final class MemoryUtils {
 
 
     public static String pidMemoryUsage(int pid) throws IOException {
-        ///'ps -o pid,rss,vsz -p 3622'
         Process p = new ProcessBuilder()
             .command("ps", "-o", "pid,rss,vsz", "-p", Long.toString(pid))
             .start();

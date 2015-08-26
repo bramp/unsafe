@@ -22,7 +22,7 @@ public abstract class AbstractListTest {
     public abstract void iterateInPlace(final Blackhole bh);
 
     /**
-     * Returns the size of the internal data structures
+     * @return the size of the internal data structures
      */
     public abstract long bytes();
 }
