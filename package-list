@@ -1,0 +1,8 @@
+net.bramp.unsafe
+net.bramp.unsafe.bytebuddy
+net.bramp.unsafe.collection
+net.bramp.unsafe.collection.tests
+net.bramp.unsafe.copier
+net.bramp.unsafe.examples
+net.bramp.unsafe.jmh
+net.bramp.unsafe.sort
