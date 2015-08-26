@@ -259,7 +259,7 @@
             <!--
               http://blog.progs.be/517/publishing-javadoc-to-github-using-maven
               To build and publish the javadoc run
-                mvn clean javadoc:javadoc scm-publish:publish-scm
+                mvn clean javadoc:aggregate scm-publish:publish-scm
             -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
