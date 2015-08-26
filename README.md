@@ -14,11 +14,37 @@ the collection, instead copies the elements directly into the list. This has a f
 * unsafe-benchmark - Code to benchmark everything using the [JMH framework](http://openjdk.java.net/projects/code-tools/jmh/).
 * unsafe-tests - Some simple test classes to help with tests of the other modules.
 
-[GitHub](https://github.com/bramp/unsafe)
+[GitHub](https://github.com/bramp/unsafe) | [JavaDoc](https://bramp.github.io/unsafe/)
+
+## Use
+
+Include the Maven dependency:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>net.bramp.unsafe</groupId>
+        <artifactId>unsafe-helper</artifactId>
+        <version>1.0</version>
+    </dependency>
+</dependencies>
+```
+
+## Build
+
+To build use maven, e.g ```mvn```
+
+To release to maven central, we use the [Sonatype OSS repo](http://central.sonatype.org/pages/ossrh-guide.html), and
+[maven-release-plugin](https://maven.apache.org/maven-release/maven-release-plugin/):
+
+```bash
+mvn release:prepare
+mvn release:perform
+```
 
 ## Benchmarks
 
-Read more about the benchmarks at bramp.net TODO add link.
+Read more about the benchmarks at [bramp.net](https://blog.bramp.net/post/2015/08/24/unsafe-part-1-sun.misc.unsafe-helper-classes/)
 
 ```bash
 cd unsafe-benchmark
@@ -89,32 +115,6 @@ ArrayListBenchmark.testListIterateInPlace  UnsafeArrayList<EightLongs>  5000000 
 ArrayListBenchmark.testSort                UnsafeArrayList<EightLongs>  80000000  avgt   5      40.697  ±      0.743  s/op
 ArrayListBenchmark.testSort                UnsafeArrayList<EightLongs>  20000000  avgt   5      7.608   ±      0.267  s/op
 ArrayListBenchmark.testSort                UnsafeArrayList<EightLongs>  5000000   avgt   5      1.729   ±      0.101  s/op
-```
-
-## Use
-
-Include the Maven dependency:
-
-```xml
-<dependencies>
-    <dependency>
-        <groupId>net.bramp.unsafe</groupId>
-        <artifactId>unsafe-helper</artifactId>
-        <version>1.0</version>
-    </dependency>
-</dependencies>
-```
-
-## Build
-
-To build use maven, e.g ```mvn```
-
-To release to maven central, we use the [Sonatype OSS repo](http://central.sonatype.org/pages/ossrh-guide.html), and
-[maven-release-plugin](https://maven.apache.org/maven-release/maven-release-plugin/):
-
-```bash
-mvn release:prepare
-mvn release:perform
 ```
 
 ## Further Reading
