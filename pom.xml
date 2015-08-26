@@ -102,6 +102,36 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>release</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -207,8 +237,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
-                    <reportOutputDirectory>${project.basedir}/apidocs</reportOutputDirectory>
+                    <!--
+                    <reportOutputDirectory>${project.reporting.outputDirectory}/apidocs</reportOutputDirectory>
                     <destDir>apidocs</destDir>
+                    -->
+                    <nohelp>true</nohelp>
                 </configuration>
                 <executions>
                     <execution>
@@ -228,24 +261,30 @@
                 </executions>
             </plugin>
 
+            <!--
+              http://blog.progs.be/517/publishing-javadoc-to-github-using-maven
+              To build and publish the javadoc run
+                mvn clean javadoc:javadoc scm-publish:publish-scm
+            -->
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
+                <artifactId>maven-scm-publish-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
+                    <checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
+                    <content>${project.reporting.outputDirectory}/apidocs</content>
+                    <skipDeletedFiles>true</skipDeletedFiles>
+                    <pubScmUrl>${project.scm.connection}</pubScmUrl>
+                    <scmBranch>gh-pages</scmBranch>
+                </configuration>
             </plugin>
+            -->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-deploy-plugin</artifactId>
             </plugin>
 
             <plugin>
