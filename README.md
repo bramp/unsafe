@@ -1,6 +1,8 @@
 # Unsafe
 by Andrew Brampton ([bramp.net](https://bramp.net))
 
+[GitHub](https://github.com/bramp/unsafe) | [JavaDoc](https://bramp.github.io/unsafe/)
+
 This is a collection of tools that make use of the [sun.misc.Unsafe class](http://www.docjar.com/docs/api/sun/misc/Unsafe.html).
 This Unsafe class allows direct access to memory within the JVM, which is extremely dangerous, but fun :).
 
@@ -14,7 +16,10 @@ the collection, instead copies the elements directly into the list. This has a f
 * unsafe-benchmark - Code to benchmark everything using the [JMH framework](http://openjdk.java.net/projects/code-tools/jmh/).
 * unsafe-tests - Some simple test classes to help with tests of the other modules.
 
-[GitHub](https://github.com/bramp/unsafe) | [JavaDoc](https://bramp.github.io/unsafe/)
+Read about this in a series of articles:
+* [Part 1: sun.misc.Unsafe Helper Classes](https://blog.bramp.net/post/2015/08/24/unsafe-part-1-sun.misc.unsafe-helper-classes/)
+* [Part 2: Using sun.misc.Unsafe to create a contiguous array of objects](https://blog.bramp.net/post/2015/08/26/unsafe-part-2-using-sun.misc.unsafe-to-create-a-contiguous-array-of-objects/)
+* [Part 3: Benchmarking a java UnsafeArrayList](https://blog.bramp.net/post/2015/08/27/unsafe-part-3-benchmarking-a-java-unsafearraylist/)
 
 ## Use
 
@@ -44,7 +49,7 @@ mvn release:perform
 
 ## Benchmarks
 
-Read more about the benchmarks at [bramp.net](https://blog.bramp.net/post/2015/08/24/unsafe-part-1-sun.misc.unsafe-helper-classes/)
+Read more about the benchmarks at [bramp.net](https://blog.bramp.net/post/2015/08/27/unsafe-part-3-benchmarking-a-java-unsafearraylist/)
 
 ```bash
 cd unsafe-benchmark
