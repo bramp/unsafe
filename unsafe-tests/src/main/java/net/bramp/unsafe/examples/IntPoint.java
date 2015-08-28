@@ -4,8 +4,8 @@ import com.google.common.collect.ComparisonChain;
 
 /**
  * Simple test class which stores two ints, x and y.
- * <p/>
- * <pre>
+ *
+ * <p><pre>
  * 0x00000000: 01 00 00 00 00 00 00 00  A1 C3 62 DF 01 00 00 00
  * 0x00000010: 02 00 00 00 00 00 00 00
  * </pre>

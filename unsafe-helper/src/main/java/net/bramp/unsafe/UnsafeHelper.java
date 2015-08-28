@@ -10,14 +10,14 @@ import java.lang.reflect.Modifier;
 /**
  * Methods adapted from:
  * <ul>
- * <li>http://mishadoff.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/</li>
- * <li>http://mydailyjava.blogspot.com/2013/12/sunmiscunsafe.html</li>
- * <li>http://zeroturnaround.com/rebellabs/dangerous-code-how-to-be-unsafe-with-java-classes-objects-in-memory/</li>
+ * <li><a href="http://mishadoff.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/">http://mishadoff.com/blog/java-magic-part-4-sun-dot-misc-dot-unsafe/</a></li>
+ * <li><a href="http://mydailyjava.blogspot.com/2013/12/sunmiscunsafe.html">http://mydailyjava.blogspot.com/2013/12/sunmiscunsafe.html</a></li>
+ * <li><a href="http://zeroturnaround.com/rebellabs/dangerous-code-how-to-be-unsafe-with-java-classes-objects-in-memory/">http://zeroturnaround.com/rebellabs/dangerous-code-how-to-be-unsafe-with-java-classes-objects-in-memory/</a></li>
  * </ul>
- * <p>
- * Other interesting reads:
+ *
+ * <p>Other interesting reads:
  * <ul>
- * <li>http://www.codeinstructions.com/2008/12/java-objects-memory-structure.html</li>
+ * <li><a href="http://www.codeinstructions.com/2008/12/java-objects-memory-structure.html">http://www.codeinstructions.com/2008/12/java-objects-memory-structure.html</a></li>
  * </ul>
  */
 public class UnsafeHelper {
@@ -43,8 +43,8 @@ public class UnsafeHelper {
 
   /**
    * Returns the address the object is located at
-   * <p/>
-   * WARNING: This does not return a pointer, so be warned pointer arithmetic will not work.
+   *
+   * <p>WARNING: This does not return a pointer, so be warned pointer arithmetic will not work.
    *
    * @param obj The object
    * @return the address of the object
@@ -74,9 +74,10 @@ public class UnsafeHelper {
 
   /**
    * Copies the memory from srcAddress into dest
-   * <p/>
-   * This is our own implementation because Unsafe.copyMemory(Object src, .. Object dest, ...)
-   * only works if dest in an array, so we wrote our only implementations. https://goo.gl/pBVlJv
+   *
+   * <p>This is our own implementation because Unsafe.copyMemory(Object src, .. Object dest, ...)
+   * only works if <a href="https://goo.gl/pBVlJv">dest in an array</a>, so we wrote our only
+   * implementations.
    */
   public static void copyMemory(final Object src, long srcOffset, final Object dest,
       final long destOffset, final long len) {
@@ -175,10 +176,11 @@ public class UnsafeHelper {
 
   /**
    * Returns the size of the header for an instance of this class (in bytes).
-   * <p/>
-   * More information http://www.codeinstructions.com/2008/12/java-objects-memory-structure.html
-   * and http://stackoverflow.com/a/17348396/88646
-   * <pre>
+   *
+   * <p>More information <a href="http://www.codeinstructions.com/2008/12/java-objects-memory-structure.html">http://www.codeinstructions.com/2008/12/java-objects-memory-structure.html</a>
+   * and <a href="http://stackoverflow.com/a/17348396/88646">http://stackoverflow.com/a/17348396/88646</a>
+   *
+   * <p><pre>
    * ,------------------+------------------+------------------ +---------------.
    * |    mark word(8)  | klass pointer(4) |  array size (opt) |    padding    |
    * `------------------+------------------+-------------------+---------------'
@@ -223,7 +225,7 @@ public class UnsafeHelper {
   }
 
   /**
-   * Returns the size of an instance of this class (in bytes)
+   * Returns the size of an instance of this class (in bytes).
    * Instances include a header + all fields + padded to 8 bytes.
    * If this is an array, it does not include the size of the elements.
    *
@@ -272,9 +274,10 @@ public class UnsafeHelper {
 
   /**
    * Prints out the object (including header, padding, and all fields) as hex.
-   * <p/>
-   * Some examples:
-   * <pre>
+   *
+   * <p>Some examples:
+   *
+   * <p><pre>
    * /**
    *  * Longs are always 8 byte aligned, so 4 bytes of padding
    *  * 0x00000000: 01 00 00 00 00 00 00 00  9B 81 61 DF 00 00 00 00

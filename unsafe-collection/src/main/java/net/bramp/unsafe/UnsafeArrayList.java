@@ -10,9 +10,9 @@ import java.util.RandomAccess;
 /**
  * ArrayList implemented using Unsafe operations
  *
+ * <p>This is not thread safe.
+ *
  * @see <a href="http://www.docjar.com/docs/api/sun/misc/Unsafe.html">http://www.docjar.com/docs/api/sun/misc/Unsafe.html</a>
- * <p/>
- * This is not thread safe.
  */
 public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T>, RandomAccess {
 
