@@ -8,24 +8,23 @@ import java.util.Random;
 import java.util.RandomAccess;
 
 /**
- * Inspired by Collections.shuffle(...)
+ * Simple Fisher–Yates shuffle inspired by Collections.shuffle(...).
  */
 public abstract class Shuffle {
 
-    // Simple Fisher–Yates shuffle
-    public static void shuffleInplace(InplaceList<?> list, Random rnd) {
-        for (int i=list.size(); i>1; i--) {
-            list.swap(i-1, rnd.nextInt(i));
-        }
+  public static <T> void shuffleInplace(InplaceList<T> list, Random rnd) {
+    for (int i = list.size(); i > 1; i--) {
+      list.swap(i - 1, rnd.nextInt(i));
     }
+  }
 
-    public static<T> void swap(List<T> list, int i, int j) {
-        list.set(i, list.set(j, list.get(i)));
-    }
+  public static <T> void swap(List<T> list, int i, int j) {
+    list.set(i, list.set(j, list.get(i)));
+  }
 
-    public static<T> void shuffle(List<T> list, Random rnd) {
-        for (int i=list.size(); i>1; i--) {
-            swap(list, i-1, rnd.nextInt(i));
-        }
+  public static <T> void shuffle(List<T> list, Random rnd) {
+    for (int i = list.size(); i > 1; i--) {
+      swap(list, i - 1, rnd.nextInt(i));
     }
+  }
 }

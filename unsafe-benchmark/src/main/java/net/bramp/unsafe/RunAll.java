@@ -6,8 +6,8 @@ import org.openjdk.jmh.runner.RunnerException;
 
 
 public class RunAll {
-    public static void main(String[] args) throws RunnerException {
-        UnrolledCopierBenchmark.main(args);
-        ArrayListBenchmark.main(args);
-    }
+  public static void main(String[] args) throws RunnerException {
+    UnrolledCopierBenchmark.main(args);
+    ArrayListBenchmark.main(args);
+  }
 }

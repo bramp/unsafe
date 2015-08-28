@@ -7,14 +7,13 @@ import org.openjdk.jmh.infra.Blackhole;
 
 public class ArrayListLongPoint extends AbstractArrayListTest<LongPoint> {
 
-    @Override
-    public LongPoint newInstance() {
-        return new LongPoint(r.nextLong(), r.nextLong());
-    }
+  @Override public LongPoint newInstance() {
+    return new LongPoint(rand.nextLong(), rand.nextLong());
+  }
 
-    public void iterate(final Blackhole bh) {
-        for (int i = 0; i < size; i++) {
-            bh.consume(list.get(i).x);
-        }
+  @Override public void iterate(final Blackhole bh) {
+    for (int i = 0; i < size; i++) {
+      bh.consume(list.get(i).x);
     }
+  }
 }
