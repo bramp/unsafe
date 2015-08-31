@@ -11,14 +11,14 @@ public class EightLongs implements Comparable<EightLongs> {
   /**
    * Creates a new EightLongs.
    *
-   * @param a
-   * @param b
-   * @param c
-   * @param d
-   * @param e
-   * @param f
-   * @param g
-   * @param h
+   * @param a 1st field
+   * @param b 2nd field
+   * @param c 3rd field
+   * @param d 4th field
+   * @param e 5th field
+   * @param f 6th field
+   * @param g 7th field
+   * @param h 8th field
    */
   public EightLongs(long a, long b, long c, long d, long e, long f, long g, long h) {
     this.a = a;
@@ -47,22 +47,22 @@ public class EightLongs implements Comparable<EightLongs> {
       return false;
     }
 
-    EightLongs fourLongs = (EightLongs) obj;
-    return Objects.equal(a, fourLongs.a)
-        && Objects.equal(b, fourLongs.b)
-        && Objects.equal(c, fourLongs.c)
-        && Objects.equal(d, fourLongs.d)
-        && Objects.equal(e, fourLongs.e)
-        && Objects.equal(f, fourLongs.f)
-        && Objects.equal(g, fourLongs.g)
-        && Objects.equal(h, fourLongs.h);
+    EightLongs eightLongs = (EightLongs) obj;
+    return Objects.equal(a, eightLongs.a)
+        && Objects.equal(b, eightLongs.b)
+        && Objects.equal(c, eightLongs.c)
+        && Objects.equal(d, eightLongs.d)
+        && Objects.equal(e, eightLongs.e)
+        && Objects.equal(f, eightLongs.f)
+        && Objects.equal(g, eightLongs.g)
+        && Objects.equal(h, eightLongs.h);
   }
 
   @Override public int hashCode() {
     return Objects.hashCode(a, b, c, d, e, f, g, h);
   }
 
-  public int compareTo(EightLongs obj) {
+  @Override public int compareTo(EightLongs obj) {
     return ComparisonChain.start()
         .compare(a, obj.a).compare(b, obj.b)
         .compare(c, obj.c).compare(d, obj.d)

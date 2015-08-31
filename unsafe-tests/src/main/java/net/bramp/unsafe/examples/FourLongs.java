@@ -7,11 +7,12 @@ public class FourLongs implements Comparable<FourLongs> {
   public long a, b, c, d;
 
   /**
-   * Creates a new FourLongs
-   * @param a
-   * @param b
-   * @param c
-   * @param d
+   * Creates a new FourLongs.
+   *
+   * @param a 1st field
+   * @param b 2nd field
+   * @param c 3rd field
+   * @param d 4th field
    */
   public FourLongs(long a, long b, long c, long d) {
     this.a = a;

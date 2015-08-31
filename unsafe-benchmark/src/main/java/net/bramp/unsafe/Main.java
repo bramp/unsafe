@@ -11,6 +11,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
+  /**
+   * Prints the memory layout of various test classes.
+   */
   public static void printMemoryLayout2() {
     Object o1 = new Object();
     Object o2 = new Object();
@@ -18,11 +21,6 @@ public class Main {
     Byte b1 = new Byte((byte) 0x12);
     Byte b2 = new Byte((byte) 0x34);
     Byte b3 = new Byte((byte) 0x56);
-
-    Byte[] bArray0 = new Byte[] {};
-    Byte[] bArray1 = new Byte[] {b1};
-    Byte[] bArray2 = new Byte[] {b1, b2};
-    Byte[] bArray3 = new Byte[] {b1, b2, b3};
 
     Long l = new Long(0x0123456789ABCDEFL);
     Person p = new Person("Bob", 406425600000L, 'M');
@@ -37,6 +35,11 @@ public class Main {
     UnsafeHelper.hexDump(System.out, b1);
     UnsafeHelper.hexDump(System.out, b2);
     UnsafeHelper.hexDump(System.out, b3);
+
+    Byte[] bArray0 = new Byte[] {};
+    Byte[] bArray1 = new Byte[] {b1};
+    Byte[] bArray2 = new Byte[] {b1, b2};
+    Byte[] bArray3 = new Byte[] {b1, b2, b3};
 
     System.out.printf("Byte[0] len:%d header:%d\n", UnsafeHelper.sizeOf(bArray0),
         UnsafeHelper.headerSize(bArray0));
@@ -185,57 +188,55 @@ public class Main {
 
     //printMemoryLayout();
 
-        /*
-        net.bramp.unsafe.UnsafeArrayList<Long> list = new net.bramp.unsafe.UnsafeArrayList<Long>(Long.class, 3);
-        list.set(0, new Long(1));
-        list.set(1, new Long(2));
-        list.set(2, new Long(3));
-        */
+    /*
+    net.bramp.unsafe.UnsafeArrayList<Long> list = new net.bramp.unsafe.UnsafeArrayList<Long>(Long.class, 3);
+    list.set(0, new Long(1));
+    list.set(1, new Long(2));
+    list.set(2, new Long(3));
+    */
 
-        /*
-        net.bramp.unsafe.UnsafeArrayList<Person> list = new net.bramp.unsafe.UnsafeArrayList<Person>(Person.class, 3);
-        list.set(0, new Person("Andrew", 406425600000L, 'M'));
-        list.set(1, new Person("Bob", 406425600000L, 'M'));
-        list.set(2, new Person("Charlie", 406425600000L, 'M'));
-        */
+    /*
+    net.bramp.unsafe.UnsafeArrayList<Person> list = new net.bramp.unsafe.UnsafeArrayList<Person>(Person.class, 3);
+    list.set(0, new Person("Andrew", 406425600000L, 'M'));
+    list.set(1, new Person("Bob", 406425600000L, 'M'));
+    list.set(2, new Person("Charlie", 406425600000L, 'M'));
+    */
 
     //Helper.hexDump(System.out, new Object[] { list } );
 
-        /*
-        System.out.printf("Address: 0x%08X\n", Helper.toAddress(list));
-        System.out.printf("Base: 0x%08X\n", list.base);
-        //System.out.printf("Base: 0x%08X\n", Helper.getUnsafe().getAddress( Helper.toAddress(list) ));
+    /*
+    System.out.printf("Address: 0x%08X\n", Helper.toAddress(list));
+    System.out.printf("Base: 0x%08X\n", list.base);
+    //System.out.printf("Base: 0x%08X\n", Helper.getUnsafe().getAddress( Helper.toAddress(list) ));
 
-        //Helper.hexDumpAddress(System.out, Helper.toAddress(list), Helper.sizeOf(list));
-        Helper.hexDump(System.out, list);
-        Helper.hexDumpAddress(System.out, list.base, list.capacity * list.elementSize);
+    //Helper.hexDumpAddress(System.out, Helper.toAddress(list), Helper.sizeOf(list));
+    Helper.hexDump(System.out, list);
+    Helper.hexDumpAddress(System.out, list.base, list.capacity * list.elementSize);
 
-        //Helper.hexDumpAddress(System.out, Helper.toAddress(list), 16);
-        */
+    //Helper.hexDumpAddress(System.out, Helper.toAddress(list), 16);
+    */
 
-        /*
-        System.out.printf("1 %s\n", safeList.get(0), unsafeList.get(0));
-        System.out.printf("2 %s\n", safeList.get(1), unsafeList.get(1));
-        System.out.printf("3 %s\n", safeList.get(2), unsafeList.get(2));
-        */
+    /*
+    System.out.printf("1 %s\n", safeList.get(0), unsafeList.get(0));
+    System.out.printf("2 %s\n", safeList.get(1), unsafeList.get(1));
+    System.out.printf("3 %s\n", safeList.get(2), unsafeList.get(2));
+    */
 
-        /*
-        Collections.sort(list, new Comparator<Point>() {
-            @Override
-            public int compare(Point o1, Point o2) {
-                return o2.x - o1.x;
-            }
-        });
-        */
-        /*
-        System.out.printf("1 %s\n", safeList.get(0), unsafeList.get(0));
-        System.out.printf("2 %s\n", safeList.get(1), unsafeList.get(1));
-        System.out.printf("3 %s\n", safeList.get(2), unsafeList.get(2));
-        */
+    /*
+    Collections.sort(list, new Comparator<Point>() {
+        @Override
+        public int compare(Point o1, Point o2) {
+            return o2.x - o1.x;
+        }
+    });
+    */
+    /*
+    System.out.printf("1 %s\n", safeList.get(0), unsafeList.get(0));
+    System.out.printf("2 %s\n", safeList.get(1), unsafeList.get(1));
+    System.out.printf("3 %s\n", safeList.get(2), unsafeList.get(2));
+    */
 
     //printMemoryLayout2();
     new UnsafeTester().go();
-
   }
-
 }

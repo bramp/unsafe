@@ -9,8 +9,8 @@ import net.bytebuddy.jar.asm.Opcodes;
 
 /**
  * A stack assignment that stores a method variable from a given index of the local variable array.
- * <p>
- * This class is a copy of MethodVariableLoader with a few things changed to make it suitable for
+ *
+ * <p>This class is a copy of MethodVariableLoader with a few things changed to make it suitable for
  * storing.
  */
 public enum MethodVariableStore {
@@ -46,8 +46,8 @@ public enum MethodVariableStore {
   private final int storeOpcode;
 
   /**
-   * The offset for any shortcut opcode that allows to store a variable from a low range index, such as
-   * {@code ASTORE_0}, {@code ISTORE_0} etc.
+   * The offset for any shortcut opcode that allows to store a variable from a low range index,
+   * such as {@code ASTORE_0}, {@code ISTORE_0} etc.
    */
   private final int storeOpcodeShortcutOffset;
 
@@ -60,8 +60,9 @@ public enum MethodVariableStore {
    * Creates a new method variable access for a given JVM type.
    *
    * @param storeOpcode               The opcode for loading this variable.
-   * @param storeOpcodeShortcutOffset The offset for any shortcut opcode that allows to load a variable from a low
-   *                                  range index, such as {@code ASTORE_0}, {@code ISTORE_0} etc.
+   * @param storeOpcodeShortcutOffset The offset for any shortcut opcode that allows to load a
+   *                                  variable from a low range index, such as {@code ASTORE_0},
+   *                                  {@code ISTORE_0} etc.
    * @param stackSize                 The size of the JVM type.
    */
   MethodVariableStore(int storeOpcode, int storeOpcodeShortcutOffset, StackSize stackSize) {
@@ -96,12 +97,12 @@ public enum MethodVariableStore {
 
   /**
    * Creates a stack assignment for a given index of the local variable array.
-   * <p>&nbsp;</p>
-   * The index has to be relative to the method's local variable array size.
    *
-   * @param variableOffset The offset of the variable where {@code double} and {@code long} types
+   * <p>The index has to be relative to the method's local variable array size.
+   *
+   * @param variableOffset the offset of the variable where {@code double} and {@code long} types
    *                       count two slots.
-   * @return A stack manipulation representing the method retrieval.
+   * @return a stack manipulation representing the method retrieval.
    */
   public StackManipulation storeOffset(int variableOffset) {
     return new ArgumentStoringStackManipulation(variableOffset);
@@ -112,7 +113,8 @@ public enum MethodVariableStore {
   }
 
   /**
-   * A stack manipulation for loading a variable of a method's local variable array onto the operand stack.
+   * A stack manipulation for loading a variable of a method's local variable array onto the operand
+   * stack.
    */
   protected class ArgumentStoringStackManipulation implements StackManipulation {
 
@@ -124,7 +126,8 @@ public enum MethodVariableStore {
     /**
      * Creates a new argument loading stack manipulation.
      *
-     * @param variableIndex The index of the local variable array from which the variable should be stored.
+     * @param variableIndex the index of the local variable array from which the variable should be
+     *                      stored.
      */
     protected ArgumentStoringStackManipulation(int variableIndex) {
       this.variableIndex = variableIndex;
@@ -158,7 +161,7 @@ public enum MethodVariableStore {
     /**
      * Returns the outer instance.
      *
-     * @return The outer instance.
+     * @return the outer instance.
      */
     private MethodVariableStore getMethodVariableAccess() {
       return MethodVariableStore.this;

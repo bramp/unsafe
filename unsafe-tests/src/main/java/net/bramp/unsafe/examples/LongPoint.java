@@ -4,6 +4,8 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 
 /**
+ * Simple test class which stores two longs, x and y.
+ *
  * <pre>
  * 0x00000000: 01 00 00 00 00 00 00 00  AE C4 62 DF 00 00 00 00
  * 0x00000010: 01 00 00 00 00 00 00 00  02 00 00 00 00 00 00 00
@@ -22,12 +24,14 @@ public class LongPoint implements Comparable<LongPoint> {
     return "Point(" + x + "," + y + ")";
   }
 
-  @Override public boolean equals(Object o) {
-    if (this == o)
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
-    if (o == null || getClass() != o.getClass())
+    }
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
-    LongPoint longPoint = (LongPoint) o;
+    }
+    LongPoint longPoint = (LongPoint) obj;
     return Objects.equal(x, longPoint.x) && Objects.equal(y, longPoint.y);
   }
 
@@ -35,7 +39,7 @@ public class LongPoint implements Comparable<LongPoint> {
     return Objects.hashCode(x, y);
   }
 
-  public int compareTo(LongPoint o) {
-    return ComparisonChain.start().compare(x, o.x).compare(y, o.y).result();
+  public int compareTo(LongPoint obj) {
+    return ComparisonChain.start().compare(x, obj.x).compare(y, obj.y).result();
   }
 }

@@ -54,10 +54,10 @@ class CopierImplementation implements ByteCodeAppender, Implementation {
     final Method putLongMethod =
         Unsafe.class.getMethod("putLong", Object.class, long.class, long.class);
 
-    final StackManipulation setupStack =
-        new StackManipulation.Compound(LongConstant.forValue(offset),           // LDC offset
-            MethodVariableStore.LONG.storeOffset(4)  // LSTORE 4
-        );
+    final StackManipulation setupStack = new StackManipulation.Compound(
+        LongConstant.forValue(0),                // LDC offset
+        MethodVariableStore.LONG.storeOffset(4)  // LSTORE 4
+    );
 
     final StackManipulation copyStack = new StackManipulation.Compound(
         // unsafe.putLong(dest, destOffset, unsafe.getLong(src));
@@ -74,7 +74,8 @@ class CopierImplementation implements ByteCodeAppender, Implementation {
         MethodVariableAccess.LONG.loadOffset(2),      // LLOAD 2 src
 
         MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(getLongMethod)),
-        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(putLongMethod)));
+        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(putLongMethod))
+    );
 
     final StackManipulation incrementStack = new StackManipulation.Compound(
         // destOffset += 8; src += 8;
@@ -97,6 +98,7 @@ class CopierImplementation implements ByteCodeAppender, Implementation {
       stack[i * 2 + 1] = copyStack;
       stack[i * 2 + 2] = incrementStack;
     }
+    // Override the last incrementStack with a "return"
     stack[stack.length - 1] = MethodReturn.VOID;
 
     return new StackManipulation.Compound(stack);

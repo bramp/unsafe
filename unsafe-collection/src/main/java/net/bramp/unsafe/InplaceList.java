@@ -7,16 +7,17 @@ public interface InplaceList<E> extends List<E> {
   /**
    * Copies the element at index into dest.
    *
-   * @param dest  The destination object
-   * @param index The index of the object to get
-   * @return The fetched object
+   * @param dest  the destination object
+   * @param index the index of the object to get
+   * @return the fetched object
    */
   E get(E dest, int index);
 
   /**
-   * Swaps two elements
-   * @param i
-   * @param j
+   * Swaps two elements.
+   *
+   * @param i index of first element to swap
+   * @param j index of second element to swap
    */
   void swap(int i, int j);
 }

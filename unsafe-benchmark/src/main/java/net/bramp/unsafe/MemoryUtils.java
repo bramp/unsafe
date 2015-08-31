@@ -52,13 +52,13 @@ public final class MemoryUtils {
 
   /**
    * Returns the pid of the current process.
-   * This fails on systems without process identifers.
+   * This fails on systems without process identifiers.
    *
    * @return the processes pid
-   * @throws NoSuchFieldException
-   * @throws IllegalAccessException
-   * @throws NoSuchMethodException
-   * @throws InvocationTargetException
+   * @throws NoSuchFieldException if the JVM does not support the VMManagement class
+   * @throws IllegalAccessException if the JVM does not support the VMManagement class
+   * @throws NoSuchMethodException if the JVM does not support pids.
+   * @throws InvocationTargetException if the JVM does not support pids.
    */
   public static int getPid()
       throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException,
@@ -68,10 +68,10 @@ public final class MemoryUtils {
     jvm.setAccessible(true);
 
     VMManagement mgmt = (VMManagement) jvm.get(runtime);
-    Method pid_method = mgmt.getClass().getDeclaredMethod("getProcessId");
-    pid_method.setAccessible(true);
+    Method getProcessId = mgmt.getClass().getDeclaredMethod("getProcessId");
+    getProcessId.setAccessible(true);
 
-    return (Integer) pid_method.invoke(mgmt);
+    return (Integer) getProcessId.invoke(mgmt);
   }
 
   /**
@@ -79,7 +79,7 @@ public final class MemoryUtils {
    *
    * @param pid the pid of the process
    * @return the pid, rss, and vsz for the process
-   * @throws IOException
+   * @throws IOException if executing ps fails
    */
   public static String pidMemoryUsage(int pid) throws IOException {
     Process process =
