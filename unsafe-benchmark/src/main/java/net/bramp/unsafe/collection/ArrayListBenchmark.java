@@ -50,7 +50,7 @@ public class ArrayListBenchmark {
    */
   @Setup(Level.Trial)
   public void setup() throws Exception {
-    test = benchmarks.get(list + "\t" + type);
+    test = benchmarks.get(list + "-" + type);
     if (test == null) {
       throw new RuntimeException("Can't find requested test " + list + " " + type);
     }
