@@ -6,6 +6,7 @@ import net.bramp.unsafe.bytebuddy.MethodVariableStore;
 import com.google.common.base.Preconditions;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.description.method.ParameterList;
 import net.bytebuddy.dynamic.scaffold.InstrumentedType;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
@@ -28,21 +29,26 @@ class CopierImplementation implements ByteCodeAppender, Implementation {
   final long offset;
   final long length;
 
+  /**
+   * Creates a CopierImplementation
+   * @param offset offset to start copying from
+   * @param length number of bytes to copy
+   */
   public CopierImplementation(long offset, long length) {
     this.offset = offset;
     this.length = length;
-  }
 
-  private StackManipulation buildStack() throws NoSuchFieldException, NoSuchMethodException {
-
-    Preconditions.checkState(offset >= 0);
-    Preconditions.checkState(length >= 0);
+    Preconditions.checkArgument(offset >= 0);
+    Preconditions.checkArgument(length >= 0);
 
     // TODO Remove these limitations
     Preconditions
         .checkArgument(offset % COPY_STRIDE == 0, "We only support offsets aligned to 8 bytes");
     Preconditions
         .checkArgument(length % COPY_STRIDE == 0, "We only support lengths multiple of 8 bytes");
+  }
+
+  private StackManipulation buildStack() throws NoSuchFieldException, NoSuchMethodException {
 
     final int iterations = (int) (length / COPY_STRIDE);
     if (iterations <= 0) {
@@ -104,14 +110,25 @@ class CopierImplementation implements ByteCodeAppender, Implementation {
     return new StackManipulation.Compound(stack);
   }
 
+  private void checkMethodSignature(MethodDescription instrumentedMethod) {
+    final String errMessage = "%s must have signature `void copy(java.lang.Object, long)`";
+    Preconditions.checkArgument(instrumentedMethod.getReturnType().represents(void.class),
+        errMessage, instrumentedMethod);
+
+    ParameterList parameters = instrumentedMethod.getParameters();
+    Preconditions.checkArgument(parameters.size() == 2, errMessage, instrumentedMethod);
+
+    Preconditions.checkArgument(parameters.get(0).getTypeDescription().represents(Object.class),
+        errMessage, instrumentedMethod);
+
+    Preconditions.checkArgument(parameters.get(1).getTypeDescription().represents(long.class),
+        errMessage, instrumentedMethod);
+  }
+
   public Size apply(MethodVisitor methodVisitor, Implementation.Context implementationContext,
       MethodDescription instrumentedMethod) {
 
-    if (!instrumentedMethod.getReturnType().represents(void.class)) {
-      throw new IllegalArgumentException(instrumentedMethod + " must return void");
-    }
-
-    // TODO Check we have two arguments copy(Object dest, long src);
+    checkMethodSignature(instrumentedMethod);
 
     try {
       StackManipulation stack = buildStack();

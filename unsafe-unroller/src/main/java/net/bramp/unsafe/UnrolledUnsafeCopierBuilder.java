@@ -64,9 +64,12 @@ public class UnrolledUnsafeCopierBuilder {
     checkArgument(offset >= 0);
     checkArgument(length >= 0);
 
-    Class<?> dynamicType = new ByteBuddy().subclass(UnsafeCopier.class).method(named("copy"))
+    Class<?> dynamicType = new ByteBuddy()
+        .subclass(UnsafeCopier.class)
+        .method(named("copy"))
         .intercept(new CopierImplementation(offset, length)).make()
-        .load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER).getLoaded();
+        .load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
+        .getLoaded();
 
     return (UnsafeCopier) dynamicType.getDeclaredConstructor(Unsafe.class).newInstance(unsafe);
   }

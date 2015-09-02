@@ -23,7 +23,6 @@ import java.lang.reflect.InvocationTargetException;
  * UnrolledCopierBenchmark.testHandUnrolled  thrpt   25  430.376 ± 27.448  ops/us
  * UnrolledCopierBenchmark.testLoop          thrpt   25  218.056 ± 11.123  ops/us
  * UnrolledCopierBenchmark.testUnrolled      thrpt   25  437.139 ± 22.811  ops/us
- * UnrolledCopierBenchmark.testDuff          thrpt   20  192.119 ± 9.602   ops/us
  * </pre>
  */
 public class UnrolledCopierBenchmark {
