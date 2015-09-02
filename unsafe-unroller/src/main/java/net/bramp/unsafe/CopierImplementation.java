@@ -55,7 +55,7 @@ class CopierImplementation implements ByteCodeAppender, Implementation {
         Unsafe.class.getMethod("putLong", Object.class, long.class, long.class);
 
     final StackManipulation setupStack = new StackManipulation.Compound(
-        LongConstant.forValue(0),                // LDC offset
+        LongConstant.forValue(offset),           // LDC offset
         MethodVariableStore.LONG.storeOffset(4)  // LSTORE 4
     );
 
