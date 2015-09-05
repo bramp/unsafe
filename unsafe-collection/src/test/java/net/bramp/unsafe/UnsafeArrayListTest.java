@@ -13,29 +13,26 @@ public class UnsafeArrayListTest {
   UnsafeArrayList<LongPoint> list;
 
   @Before public void setup() {
-    list = new UnsafeArrayList<LongPoint>(LongPoint.class);
+    list = new UnsafeArrayList<>(LongPoint.class);
 
-    int i = 0;
-    for (int j = 0; j < TEST_SIZE; j++) {
-      list.add(new LongPoint(i++, i++));
+    for (int i = 0; i < TEST_SIZE; i++) {
+      list.add(new LongPoint(i * 2, i * 2 + 1));
     }
 
     assertEquals(TEST_SIZE, list.size());
   }
 
   @Test public void testGet() throws Exception {
-    int i = 0;
-    for (int j = 0; j < TEST_SIZE; j++) {
-      assertEquals(new LongPoint(i++, i++), list.get(j));
+    for (int i = 0; i < TEST_SIZE; i++) {
+      assertEquals(new LongPoint(i * 2, i * 2 + 1), list.get(i));
     }
   }
 
   @Test public void testGetInPlace() throws Exception {
     LongPoint tmp = new LongPoint(-1, -1);
-    int i = 0;
-    for (int j = 0; j < TEST_SIZE; j++) {
-      list.get(tmp, j);
-      assertEquals(new LongPoint(i++, i++), tmp);
+    for (int i = 0; i < TEST_SIZE; i++) {
+      list.get(tmp, i);
+      assertEquals(new LongPoint(i * 2, i * 2 + 1), tmp);
     }
   }
 }
