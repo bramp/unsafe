@@ -7,6 +7,7 @@ import sun.misc.Unsafe;
 import java.lang.reflect.InvocationTargetException;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static net.bytebuddy.matcher.ElementMatchers.named;
 
 /**
@@ -29,6 +30,11 @@ public class UnrolledUnsafeCopierBuilder {
   }
 
   public UnrolledUnsafeCopierBuilder of(Class clazz) {
+    checkNotNull(clazz);
+
+    // TODO Check if the class has any non-primitive fields. If so, throw an exception.
+    // new RuntimeException("Storing classes which contain references is dangerous, as the garbage collector will lose track of them thus is not supported")
+
     offset = UnsafeHelper.firstFieldOffset(clazz);
     length = UnsafeHelper.sizeOf(clazz) - offset;
     return this;

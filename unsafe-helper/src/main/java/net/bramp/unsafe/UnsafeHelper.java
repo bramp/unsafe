@@ -82,18 +82,10 @@ public class UnsafeHelper {
   public static void copyMemory(final Object src, long srcOffset, final Object dest,
       final long destOffset, final long len) {
 
-    if (src != null) {
-      throw new RuntimeException("Src must be null");
-    }
-
-    if (len % COPY_STRIDE != 0) {
-      throw new RuntimeException("Length (" + len + ") is not a multiple of stride");
-    }
-
     // TODO make this work if destOffset is not STRIDE aligned
-    if (destOffset % COPY_STRIDE != 0) {
-      throw new RuntimeException("Dest offset (" + destOffset + ") is not stride aligned");
-    }
+    Preconditions.checkNotNull(src);
+    Preconditions.checkArgument(len % COPY_STRIDE != 0, "Length (%d) is not a multiple of stride", len);
+    Preconditions.checkArgument(destOffset % COPY_STRIDE != 0, "Dest offset (%d) is not stride aligned", destOffset);
 
     long end = destOffset + len;
     for (long offset = destOffset; offset < end; ) {
@@ -117,10 +109,8 @@ public class UnsafeHelper {
         if ((f.getModifiers() & Modifier.STATIC) == 0) {
           final Class type = f.getType();
 
-          if (!type.isPrimitive()) {
-            // TODO maybe support Wrapper classes
-            throw new RuntimeException("Only primitives are supported");
-          }
+          // TODO maybe support Wrapper classes
+          Preconditions.checkArgument(type.isPrimitive(), "Only primitives are supported");
 
           final long offset = unsafe.objectFieldOffset(f);
           final long src = srcAddress + offset;
@@ -132,7 +122,7 @@ public class UnsafeHelper {
             unsafe.putLong(dest, offset, unsafe.getLong(src));
 
           } else {
-            throw new RuntimeException("Not built yet " + type);
+            throw new IllegalArgumentException("Type not supported yet: " + type);
           }
         }
       }
@@ -190,6 +180,7 @@ public class UnsafeHelper {
    * @return
    */
   public static long headerSize(Class clazz) {
+    Preconditions.checkNotNull(clazz);
     // TODO Should be calculated based on the platform
     // TODO maybe unsafe.addressSize() would help?
     long len = 12; // JVM_64 has a 12 byte header 8 + 4 (with compressed pointers on)
