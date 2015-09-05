@@ -42,7 +42,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <javac.target>1.6</javac.target>
+        <javac.target>1.7</javac.target>
     </properties>
 
     <prerequisites>
@@ -228,6 +228,8 @@
                     <source>${javac.target}</source>
                     <target>${javac.target}</target>
                     <encoding>UTF-8</encoding>
+                    <!-- Disable incremental builds due to JDK-8062800 -->
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
                     <!--
                     <compilerArgs>
                         <arg>-XDignore.symbol.file</arg>
