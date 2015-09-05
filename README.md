@@ -1,4 +1,4 @@
-# Unsafe
+# Unsafe [![Build Status](https://travis-ci.org/bramp/unsafe.svg)](https://travis-ci.org/bramp/unsafe)
 by Andrew Brampton ([bramp.net](https://bramp.net))
 
 [GitHub](https://github.com/bramp/unsafe) | [JavaDoc](https://bramp.github.io/unsafe/)
@@ -23,7 +23,7 @@ Read about this in a series of articles:
 
 ## Use
 
-Include the Maven dependency:
+Requires Java 7 or higher. To include use the following Maven dependency:
 
 ```xml
 <dependencies>
