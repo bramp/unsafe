@@ -3,9 +3,12 @@ package net.bramp.unsafe;
 
 import sun.misc.Unsafe;
 
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Methods adapted from:
@@ -85,7 +88,9 @@ public class UnsafeHelper {
     // TODO make this work if destOffset is not STRIDE aligned
     Preconditions.checkNotNull(src);
     Preconditions.checkArgument(len % COPY_STRIDE != 0, "Length (%d) is not a multiple of stride", len);
-    Preconditions.checkArgument(destOffset % COPY_STRIDE != 0, "Dest offset (%d) is not stride aligned", destOffset);
+
+    Preconditions.checkArgument(destOffset % COPY_STRIDE != 0,
+        "Dest offset (%d) is not stride aligned", destOffset);
 
     long end = destOffset + len;
     for (long offset = destOffset; offset < end; ) {
@@ -350,6 +355,13 @@ public class UnsafeHelper {
     // TODO Change this to use hexDumpAddress instead of toByteArray
     byte[] bytes = toByteArray(obj);
     hexDumpBytes(out, 0, bytes);
+  }
+
+  public static String hexDump(Object obj) throws UnsupportedEncodingException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    hexDump(new PrintStream(baos), obj);
+
+    return baos.toString(StandardCharsets.UTF_8.name());
   }
 
   public static void hexDumpBytes(PrintStream out, long offset, byte[] bytes) {
