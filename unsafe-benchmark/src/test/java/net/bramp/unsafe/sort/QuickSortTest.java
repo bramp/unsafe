@@ -30,7 +30,7 @@ public class QuickSortTest {
 
   @Test public void testLargeQuickSort() throws Exception {
 
-    final int size = 40000000;
+    final int size = 4000000;
     final Random r = new Random(size);
 
     ArrayList<LongPoint> list = new ArrayList<LongPoint>(size);
@@ -38,7 +38,7 @@ public class QuickSortTest {
       list.add(new LongPoint(r.nextLong(), r.nextLong()));
     }
 
-    // This is not guaranteed it is sorted, but chances are it is.
+    // A random list is not guaranteed to be unsorted, but chances are it is.
     assertFalse(Ordering.natural().isOrdered(list));
 
     QuickSort.quickSort(list);
