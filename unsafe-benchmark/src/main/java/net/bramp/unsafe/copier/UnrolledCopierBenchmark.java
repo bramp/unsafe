@@ -1,5 +1,8 @@
 package net.bramp.unsafe.copier;
 
+import net.bramp.unsafe.LoopingByteUnsafeCopier;
+import net.bramp.unsafe.LoopingForUnsafeCopier;
+import net.bramp.unsafe.LoopingUnsafeCopier;
 import net.bramp.unsafe.UnrolledUnsafeCopierBuilder;
 import net.bramp.unsafe.UnsafeCopier;
 import net.bramp.unsafe.UnsafeHelper;
@@ -67,6 +70,29 @@ public class UnrolledCopierBenchmark {
     }
   }
 
+  @State(Scope.Thread) public static class LoopState extends UnsafeState {
+    @Setup public void setup()
+        throws InvocationTargetException, NoSuchMethodException, InstantiationException,
+        IllegalAccessException {
+      copier = new LoopingUnsafeCopier(unsafe, destOffset, destSize);
+    }
+  }
+
+  @State(Scope.Thread) public static class ForLoopState extends UnsafeState {
+    @Setup public void setup()
+        throws InvocationTargetException, NoSuchMethodException, InstantiationException,
+        IllegalAccessException {
+      copier = new LoopingForUnsafeCopier(unsafe, destOffset, destSize);
+    }
+  }
+
+  @State(Scope.Thread) public static class ByteLoopState extends UnsafeState {
+    @Setup public void setup()
+        throws InvocationTargetException, NoSuchMethodException, InstantiationException,
+        IllegalAccessException {
+      copier = new LoopingByteUnsafeCopier(unsafe, destOffset, destSize);
+    }
+  }
 
   @State(Scope.Thread) public static class UnrolledState extends UnsafeState {
 
@@ -76,30 +102,6 @@ public class UnrolledCopierBenchmark {
       copier = new UnrolledUnsafeCopierBuilder().of(FourLongs.class).build(unsafe);
     }
   }
-
-
-  @State(Scope.Thread) public static class LoopState extends UnsafeState {
-    @Setup public void setup()
-        throws InvocationTargetException, NoSuchMethodException, InstantiationException,
-        IllegalAccessException {
-      // Construct a copier, that will look 4 times
-      copier = new UnsafeCopier(unsafe) {
-
-        final long dstEnd = destOffset + destSize;
-
-        @Override public void copy(Object dest, long src) {
-          long dstOffset = destOffset;
-
-          while (dstOffset < dstEnd) {
-            unsafe.putLong(dest, dstOffset, unsafe.getLong(src));
-            dstOffset += COPY_STRIDE;
-            src += COPY_STRIDE;
-          }
-        }
-      };
-    }
-  }
-
 
   @State(Scope.Thread) public static class HandUnrolledState extends UnsafeState {
 
@@ -131,7 +133,7 @@ public class UnrolledCopierBenchmark {
     }
   }
 
-
+  /*
   // TODO Fix DuffState it doesn't work
   @State(Scope.Thread) public static class DuffState extends UnsafeState {
 
@@ -197,15 +199,21 @@ public class UnrolledCopierBenchmark {
       };
     }
   }
+  */
 
   public static void main(String[] args) throws RunnerException {
     Options opt = new OptionsBuilder().include(UnrolledCopierBenchmark.class.getSimpleName())
-        .mode(Mode.Throughput).warmupIterations(1).warmupTime(TimeValue.seconds(10))
-        .measurementIterations(5).measurementTime(TimeValue.seconds(10)).forks(5)
-            //.addProfiler(StackProfiler.class)
-            //.addProfiler(GCProfiler.class)
+        .mode(Mode.Throughput)
+        .warmupIterations(1)
+        .warmupTime(TimeValue.seconds(10))
+        .measurementIterations(5) // 5
+        .measurementTime(TimeValue.seconds(60))
+        .forks(5) // 5
+        //.addProfiler(StackProfiler.class)
+        //.addProfiler(GCProfiler.class)
         .build();
 
     new Runner(opt).run();
   }
+
 }

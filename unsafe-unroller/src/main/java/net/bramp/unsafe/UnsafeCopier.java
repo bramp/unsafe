@@ -16,10 +16,10 @@ public abstract class UnsafeCopier {
   }
 
   /**
-   * Copies from a src memory address into the fields of the dest object.
+   * Copies from a src memory address into the offset of the dest object.
    *
-   * @param dest
-   * @param src
+   * @param dest dest object
+   * @param src src must be 8 byte aligned
    */
   public abstract void copy(Object dest, long src);
 }

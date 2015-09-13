@@ -40,12 +40,22 @@ public class UnrolledUnsafeCopierBuilder {
     return this;
   }
 
+  /**
+   * Offset to the first field to copy.
+   * @param offset
+   * @return
+   */
   public UnrolledUnsafeCopierBuilder offset(long offset) {
     checkArgument(offset >= 0);
     this.offset = offset;
     return this;
   }
 
+  /**
+   * Length of memory to copy. Typically the size of all the packed fields.
+   * @param length
+   * @return
+   */
   public UnrolledUnsafeCopierBuilder length(long length) {
     checkArgument(length >= 0);
     this.length = length;
@@ -67,8 +77,9 @@ public class UnrolledUnsafeCopierBuilder {
       throws IllegalAccessException, InstantiationException, NoSuchMethodException,
       InvocationTargetException {
 
-    checkArgument(offset >= 0);
-    checkArgument(length >= 0);
+    checkArgument(offset >= 0, "Offset must be set");
+    checkArgument(length >= 0, "Length must be set");
+    checkNotNull(unsafe);
 
     Class<?> dynamicType = new ByteBuddy()
         .subclass(UnsafeCopier.class)
@@ -79,5 +90,4 @@ public class UnrolledUnsafeCopierBuilder {
 
     return (UnsafeCopier) dynamicType.getDeclaredConstructor(Unsafe.class).newInstance(unsafe);
   }
-
 }
