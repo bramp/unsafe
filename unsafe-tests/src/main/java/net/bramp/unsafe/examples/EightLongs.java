@@ -8,6 +8,10 @@ public class EightLongs implements Comparable<EightLongs> {
   public long a, b, c, d;
   public long e, f, g, h;
 
+  public EightLongs() {
+    this(0,0,0,0,0,0,0,0);
+  }
+
   /**
    * Creates a new EightLongs.
    *
@@ -32,10 +36,15 @@ public class EightLongs implements Comparable<EightLongs> {
   }
 
   @Override public String toString() {
-    return "EightLongs{"
-        + "a=" + a + ", b=" + b + ", c=" + c + ", d=" + d
-        + "e=" + e + ", f=" + f + ", g=" + g + ", h=" + h
-        + '}';
+    return "EightLongs{" +
+        "a=0x" + Long.toHexString(a) + ", " +
+        "b=0x" + Long.toHexString(b) + ", " +
+        "c=0x" + Long.toHexString(c) + ", " +
+        "d=0x" + Long.toHexString(d) + ", " +
+        "e=0x" + Long.toHexString(e) + ", " +
+        "f=0x" + Long.toHexString(f) + ", " +
+        "g=0x" + Long.toHexString(g) + ", " +
+        "h=0x" + Long.toHexString(h) + '}';
   }
 
   @Override public boolean equals(Object obj) {

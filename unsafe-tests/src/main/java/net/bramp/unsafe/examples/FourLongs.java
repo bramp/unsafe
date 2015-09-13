@@ -6,6 +6,10 @@ import com.google.common.collect.ComparisonChain;
 public class FourLongs implements Comparable<FourLongs> {
   public long a, b, c, d;
 
+  public FourLongs() {
+    this(0, 0, 0, 0);
+  }
+
   /**
    * Creates a new FourLongs.
    *
@@ -22,7 +26,11 @@ public class FourLongs implements Comparable<FourLongs> {
   }
 
   @Override public String toString() {
-    return "FourLongs{" + "a=" + a + ", b=" + b + ", c=" + c + ", d=" + d + '}';
+    return "FourLongs{" +
+        "a=0x" + Long.toHexString(a) + ", " +
+        "b=0x" + Long.toHexString(b) + ", " +
+        "c=0x" + Long.toHexString(c) + ", " +
+        "d=0x" + Long.toHexString(d) + '}';
   }
 
   @Override public boolean equals(Object obj) {
