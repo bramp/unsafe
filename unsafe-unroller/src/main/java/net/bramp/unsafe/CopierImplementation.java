@@ -1,5 +1,6 @@
 package net.bramp.unsafe;
 
+import com.google.common.collect.ImmutableList;
 import net.bramp.unsafe.bytebuddy.LongAdd;
 import net.bramp.unsafe.bytebuddy.MethodVariableStore;
 
@@ -21,7 +22,19 @@ import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * <pre>
+ * | 0 1 2 3 4 6 7 8 0 1 2 3 4 6 7 8
+ * |     s s s s
+ * |                 d d d d
+ * 0x00000000: XX XX 00 00 00 00 00 00
+ * 0x00000000: C1 0C 65 DF XX XX 00 00
+ *
+ * </pre>
+ */
 class CopierImplementation implements ByteCodeAppender, Implementation {
 
   public static final long COPY_STRIDE = 8;
@@ -30,8 +43,9 @@ class CopierImplementation implements ByteCodeAppender, Implementation {
   final long length;
 
   /**
-   * Creates a CopierImplementation
-   * @param offset offset to start copying from
+   * Creates a CopierImplementation.
+   *
+   * @param offset offset in destination object to start copying to
    * @param length number of bytes to copy
    */
   public CopierImplementation(long offset, long length) {
@@ -41,29 +55,27 @@ class CopierImplementation implements ByteCodeAppender, Implementation {
     Preconditions.checkArgument(offset >= 0);
     Preconditions.checkArgument(length >= 0);
 
-    // TODO Remove these limitations
-    Preconditions
-        .checkArgument(offset % COPY_STRIDE == 0, "We only support offsets aligned to 8 bytes");
-    Preconditions
-        .checkArgument(length % COPY_STRIDE == 0, "We only support lengths multiple of 8 bytes");
+    // On intel we can do unaligned reads, but perhaps fix this on other platforms
+    //Preconditions
+    //    .checkArgument(offset % COPY_STRIDE == 0, "We only support destination offsets aligned to 8 bytes");
+    //Preconditions
+    //    .checkArgument(length % COPY_STRIDE == 0, "We only support lengths multiple of 8 bytes");
   }
 
-  private StackManipulation buildStack() throws NoSuchFieldException, NoSuchMethodException {
-
-    final int iterations = (int) (length / COPY_STRIDE);
-    if (iterations <= 0) {
-      return MethodReturn.VOID;
-    }
-
-    final Field unsafeField = UnsafeCopier.class.getDeclaredField("unsafe");
-    final Method getLongMethod = Unsafe.class.getMethod("getLong", long.class);
-    final Method putLongMethod =
-        Unsafe.class.getMethod("putLong", Object.class, long.class, long.class);
+  private void buildSetupStack(List<StackManipulation> stack) throws NoSuchFieldException, NoSuchMethodException {
 
     final StackManipulation setupStack = new StackManipulation.Compound(
         LongConstant.forValue(offset),           // LDC offset
         MethodVariableStore.LONG.storeOffset(4)  // LSTORE 4
     );
+
+    stack.add(setupStack);
+  }
+
+  private void buildCopyStack(List<StackManipulation> stack, int iterations, Method getMethod, Method putMethod, long stride) throws
+      NoSuchFieldException, NoSuchMethodException {
+
+    final Field unsafeField = UnsafeCopier.class.getDeclaredField("unsafe");
 
     final StackManipulation copyStack = new StackManipulation.Compound(
         // unsafe.putLong(dest, destOffset, unsafe.getLong(src));
@@ -79,35 +91,104 @@ class CopierImplementation implements ByteCodeAppender, Implementation {
 
         MethodVariableAccess.LONG.loadOffset(2),      // LLOAD 2 src
 
-        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(getLongMethod)),
-        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(putLongMethod))
+        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(getMethod)),
+        MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(putMethod))
     );
 
     final StackManipulation incrementStack = new StackManipulation.Compound(
         // destOffset += 8; src += 8;
         MethodVariableAccess.LONG.loadOffset(4), // LLOAD 4 destOffset
-        LongConstant.forValue(COPY_STRIDE),      // LDC 8 strideWidth
+        LongConstant.forValue(stride),      // LDC 8 strideWidth
         LongAdd.INSTANCE,                        // LADD
         MethodVariableStore.LONG.storeOffset(4), // LSTORE 4
 
         MethodVariableAccess.LONG.loadOffset(2), // LLOAD 2 src
-        LongConstant.forValue(COPY_STRIDE),      // LDC 8 strideWidth
+        LongConstant.forValue(stride),      // LDC 8 strideWidth
         LongAdd.INSTANCE,                        // LADD
         MethodVariableStore.LONG.storeOffset(2)  // LSTORE 2
     );
 
-    // Construct a sequence of stack manipulations
-    final StackManipulation[] stack = new StackManipulation[1 + 2 * iterations];
-    stack[0] = setupStack;
-
     for (int i = 0; i < iterations; i++) {
-      stack[i * 2 + 1] = copyStack;
-      stack[i * 2 + 2] = incrementStack;
+      stack.add(copyStack);
+      stack.add(incrementStack);
     }
-    // Override the last incrementStack with a "return"
-    stack[stack.length - 1] = MethodReturn.VOID;
+  }
 
-    return new StackManipulation.Compound(stack);
+  /**
+   * Creates iterations copies of the equivalent java code
+   * <pre>
+   * unsafe.putLong(dest, destOffset, unsafe.getLong(src));
+   * destOffset += COPY_STRIDE; src += COPY_STRIDE
+   * </pre>
+   *
+   * @param iterations
+   * @throws NoSuchFieldException
+   * @throws NoSuchMethodException
+   */
+  private void buildLongCopyStack(List<StackManipulation> stack, int iterations) throws NoSuchFieldException, NoSuchMethodException {
+    final Method getLongMethod = Unsafe.class.getMethod("getLong", long.class);
+    final Method putLongMethod = Unsafe.class.getMethod("putLong", Object.class, long.class, long.class);
+
+    buildCopyStack(stack, iterations, getLongMethod, putLongMethod, COPY_STRIDE);
+  }
+
+  /**
+   * Creates iterations copies of the equivalent java code
+   * <pre>
+   * unsafe.putByte(dest, destOffset, unsafe.getByte(src));
+   * destOffset += 1; src += 1
+   * </pre>
+   *
+   * @param iterations
+   * @throws NoSuchFieldException
+   * @throws NoSuchMethodException
+   */
+  private void buildByteCopyStack(List<StackManipulation> stack, int iterations) throws NoSuchFieldException, NoSuchMethodException {
+    final Method getByteMethod = Unsafe.class.getMethod("getByte", long.class);
+    final Method putByteMethod = Unsafe.class.getMethod("putByte", Object.class, long.class, byte.class);
+
+    buildCopyStack(stack, iterations, getByteMethod, putByteMethod, 1);
+  }
+
+  private static StackManipulation toStackManipulation(List<StackManipulation> stack) {
+    return new StackManipulation.Compound(stack.toArray(new StackManipulation[stack.size()]));
+  }
+
+  private StackManipulation buildStack() throws NoSuchFieldException, NoSuchMethodException {
+
+    if (length == 0) {
+      return MethodReturn.VOID;
+    }
+
+    final int remainder = (int) (length % COPY_STRIDE);
+    final int iterations = (int) ((length - remainder) / COPY_STRIDE);
+
+
+    // Construct a sequence of stack manipulations
+    List<StackManipulation> stack = new ArrayList<>();
+
+    buildSetupStack(stack);
+
+    if (iterations > 0) {
+      buildLongCopyStack(stack, iterations);
+
+      if (remainder == 0) {
+        // The last increment is not needed
+        stack.remove(stack.size() - 1);
+      }
+    }
+
+    if (remainder > 0) {
+      // Do a couple of more byte by byte copies
+      buildByteCopyStack(stack, remainder);
+
+      // The last increment is not needed
+      stack.remove(stack.size() - 1);
+    }
+
+    stack.add(MethodReturn.VOID);
+
+    return toStackManipulation(stack);
   }
 
   private void checkMethodSignature(MethodDescription instrumentedMethod) {
@@ -137,9 +218,7 @@ class CopierImplementation implements ByteCodeAppender, Implementation {
       return new Size(finalStackSize.getMaximalSize(),
           instrumentedMethod.getStackSize() + 2); // 2 stack slots for a single local variable
 
-    } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e);
-    } catch (NoSuchFieldException e) {
+    } catch (NoSuchMethodException | NoSuchFieldException e) {
       throw new RuntimeException(e);
     }
   }
