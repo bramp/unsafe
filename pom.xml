@@ -282,6 +282,7 @@
                     <reportOutputDirectory>${project.reporting.outputDirectory}/apidocs</reportOutputDirectory>
                     <destDir>apidocs</destDir>
                     <nohelp>true</nohelp>
+                    <linksource>true</linksource>
                 </configuration>
                 <executions>
                     <execution>
