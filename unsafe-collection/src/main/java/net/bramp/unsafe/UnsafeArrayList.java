@@ -7,6 +7,9 @@ import java.util.AbstractList;
 import java.util.Collection;
 import java.util.RandomAccess;
 
+import static net.bramp.unsafe.Preconditions.checkArgument;
+import static net.bramp.unsafe.Preconditions.checkNotNull;
+
 /**
  * ArrayList implemented using Unsafe operations
  *
@@ -22,6 +25,8 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
   final long firstFieldOffset; // Offset to the first field
   final long elementSize;      // Size of all the fields in the object
 
+  final long elementSpacing;   // Distance between offsets in the array. Always >= elementSize
+
   final T tmp;
 
   final Unsafe unsafe;
@@ -33,7 +38,7 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
   private int capacity = 0;
 
   /**
-   * @param type Must match the parameterised type
+   * @param type Must match the parametrised type
    */
   public UnsafeArrayList(Class<T> type) {
     this(type, DEFAULT_CAPACITY);
@@ -46,16 +51,14 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
 
   public UnsafeArrayList(Class<T> type, int initialCapacity) {
     this.type = type;
-    this.firstFieldOffset = UnsafeHelper.firstFieldOffset(type);
-    this.elementSize = UnsafeHelper.sizeOf(type) - firstFieldOffset;
     this.unsafe = UnsafeHelper.getUnsafe();
+    this.firstFieldOffset = UnsafeHelper.firstFieldOffset(type);
 
-    // TODO Check if the class has any non-primitive fields. If so, throw an exception.
-    // new RuntimeException("Storing classes which contain references is dangerous, as the garbage collector will lose track of them thus is not supported")
+    this.elementSize = UnsafeHelper.sizeOf(type) - firstFieldOffset;
+    this.elementSpacing = Math.max(8, this.elementSize); // TODO(bramp) Do we need to pad to 8 bytes.
 
     try {
-      copier = new UnrolledUnsafeCopierBuilder().offset(firstFieldOffset).length(elementSize)
-          .build(this.unsafe);
+      copier = new UnrolledUnsafeCopierBuilder().of(type).build(this.unsafe);
 
       // Temp working space
       tmp = newInstance();
@@ -73,8 +76,9 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
   }
 
   private void setCapacity(int capacity) {
+    checkArgument(capacity >= 0, "Capacity must be greater than or equal to zero");
     this.capacity = capacity;
-    base = unsafe.reallocateMemory(base, elementSize * capacity);
+    base = unsafe.reallocateMemory(base, elementSpacing * capacity);
   }
 
   public void ensureCapacity(int capacity) {
@@ -90,17 +94,22 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
     }
   }
 
+  protected void checkBoundsForAdd(int index) throws IndexOutOfBoundsException {
+    if (index < 0 || index > size) {
+      throw new IndexOutOfBoundsException();
+    }
+  }
 
   @Override public T get(int index) {
     try {
       return get(newInstance(), index);
     } catch (InstantiationException e) {
-      throw new RuntimeException(e);
+      throw Throwables.propagate(e);
     }
   }
 
   private long offset(int index) {
-    return base + index * elementSize;
+    return base + index * elementSpacing;
   }
 
   /**
@@ -121,39 +130,69 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
 
   @Override public T set(int index, T element) {
     checkBounds(index);
+    checkNotNull(element);
 
     // TODO checkIsX()
     // TODO If we try and store an subclass of type, we will slice of some fields.
     //      Instead we should throw an exception.
-
-    unsafe.copyMemory(element, firstFieldOffset, null, offset(index), elementSize);
-
-    return null; // TODO
+    T obj = get(index);
+    setNoCheck(index, element);
+    return obj;
   }
 
-  /**
-   * Swaps two elements
-   *
-   * @param i Index of first element
-   * @param j Index of second element
-   */
+  private void setNoCheck(int index, T element) {
+    unsafe.copyMemory(element, firstFieldOffset, null, offset(index), elementSize);
+  }
+
+    /**
+     * Swaps two elements
+     *
+     * @param i Index of first element
+     * @param j Index of second element
+     */
   public void swap(int i, int j) {
+    checkBounds(i);
+    checkBounds(j);
+
     if (i == j)
       return;
 
     copier.copy(tmp, offset(i));
-    unsafe.copyMemory(null, offset(j), null, offset(i), elementSize);
+    unsafe.copyMemory(null, offset(j), null, offset(i), elementSpacing);
     unsafe.copyMemory(tmp, firstFieldOffset, null, offset(j), elementSize);
   }
 
   @Override public void add(int index, T element) {
-    if (index != size) {
-      throw new RuntimeException("We only support adding at the end");
+    checkBoundsForAdd(index);
+    checkNotNull(element);
+
+    ensureCapacity(size + 1);
+
+    if (elementSpacing < 8) {
+      // TODO(bramp) remove this check
+      // Note: A copyMemory copies in 8,4,2 or 1 byte chunks.
+      throw new IllegalStateException("Moving data down is only supported when elementSize >= 8");
     }
 
-    final int oldSize = size++;
-    ensureCapacity(size);
-    set(oldSize, element);
+    // Move data up to make room
+    if (index < size) {
+      unsafe.copyMemory(null, offset(index), null, offset(index + 1), elementSpacing * (size - index));
+    }
+
+    setNoCheck(index, element);
+    size++;
+  }
+
+  @Override public T remove(int index) {
+    T obj = get(index);
+
+    size--;
+    // Move everything down
+    if (index < size) {
+      unsafe.copyMemory(null, offset(index + 1), null, offset(index), elementSpacing * (size - index));
+    }
+
+    return obj;
   }
 
   @Override public int size() {
@@ -164,6 +203,6 @@ public class UnsafeArrayList<T> extends AbstractList<T> implements InplaceList<T
    * @return The size of this object in bytes
    */
   public long bytes() {
-    return UnsafeHelper.sizeOf(this) + elementSize * capacity;
+    return UnsafeHelper.sizeOf(this) + elementSpacing * capacity;
   }
 }

@@ -135,9 +135,12 @@ public class UnsafeHelper {
     return unsafe.getAddress(normalize(unsafe.getInt(object, 4L)) + 12L);
   }
 
-
   public static long headerSize(Object obj) {
     return headerSize(obj.getClass());
+  }
+
+  public static long firstFieldOffset(Object obj) {
+    return firstFieldOffset(obj.getClass());
   }
 
   public static long sizeOf(Object obj) {
@@ -158,6 +161,10 @@ public class UnsafeHelper {
     }
 
     return len;
+  }
+
+  public static long sizeOfFields(Object obj) {
+    return sizeOfFields(obj.getClass());
   }
 
   private static long roundUpTo8(final long number) {
@@ -241,6 +248,15 @@ public class UnsafeHelper {
 
     // The whole class always pads to a 8 bytes boundary, so we round up to 8 bytes.
     return roundUpTo8(maxSize);
+  }
+
+  /**
+   * Size of all the fields
+   * @param clazz
+   * @return
+   */
+  public static long sizeOfFields(Class clazz) {
+    return sizeOf(clazz) - firstFieldOffset(clazz);
   }
 
   private static long normalize(int value) {
