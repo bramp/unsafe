@@ -1,4 +1,4 @@
-# Unsafe [![Build Status](https://travis-ci.org/bramp/unsafe.svg)](https://travis-ci.org/bramp/unsafe) [![Libraries.io](https://img.shields.io/librariesio/github/bramp/unsafe.svg)](https://github.com/bramp/unsafe)
+# Unsafe [![Build Status](https://travis-ci.org/bramp/unsafe.svg)](https://travis-ci.org/bramp/unsafe) [![Libraries.io](https://img.shields.io/librariesio/github/bramp/unsafe.svg)](https://libraries.io/github/bramp/unsafe)
 by Andrew Brampton ([bramp.net](https://bramp.net))
 
 [GitHub](https://github.com/bramp/unsafe) | [JavaDoc](https://bramp.github.io/unsafe/)
